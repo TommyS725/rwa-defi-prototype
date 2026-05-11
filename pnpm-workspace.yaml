@@ -1,3 +1,17 @@
 packages:
-  - "apps/*"
-  - "packages/*"
+  - apps/*
+  - packages/*
+
+ignoredBuiltDependencies:
+  - bufferutil
+  - eccrypto
+  - esbuild
+  - fsevents
+  - keccak
+  - secp256k1
+  - sharp
+  - utf-8-validate
+  - workerd
+
+onlyBuiltDependencies:
+  - bcrypto

@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "remixd",
-    "simulate:functions": "node scripts/simulate-functions.js"
+    "simulate:functions": "node scripts/simulate-functions.js",
+    "source:copy": "node scripts/print-functions-source.js"
   },
   "devDependencies": {
     "@chainlink/functions-toolkit": "^0.3.2",

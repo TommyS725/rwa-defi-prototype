@@ -4,10 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "remixd"
+    "dev": "remixd",
+    "simulate:functions": "node scripts/simulate-functions.js"
   },
   "devDependencies": {
+    "@chainlink/functions-toolkit": "^0.3.2",
     "@remix-project/remixd": "^0.6.64",
+    "ethers": "^6.16.0",
     "tsx": "^4.21.0"
   }
 }

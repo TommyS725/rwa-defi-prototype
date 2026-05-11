@@ -272,7 +272,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"orcale/MockReserveOrcale.sol": "MockReserveOracle"
+			"oracle/MockReserveOrcale.sol": "MockReserveOracle"
 		},
 		"evmVersion": "osaka",
 		"libraries": {},
@@ -310,7 +310,7 @@
 				"dweb:/ipfs/QmahzKgFG7grePuMXhKwxZ4ppPH1ej5sPmRyq9EKgNhoP8"
 			]
 		},
-		"orcale/MockReserveOrcale.sol": {
+		"oracle/MockReserveOrcale.sol": {
 			"keccak256": "0xfca1ff9420c422d0afac82e90dc5f94fa5a8bf0ff747feb7f158ed3f44f7df78",
 			"license": "MIT",
 			"urls": [

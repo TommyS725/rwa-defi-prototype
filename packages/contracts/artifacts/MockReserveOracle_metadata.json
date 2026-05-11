@@ -62,6 +62,12 @@
 				"inputs": [
 					{
 						"indexed": false,
+						"internalType": "bytes32",
+						"name": "requestId",
+						"type": "bytes32"
+					},
+					{
+						"indexed": false,
 						"internalType": "uint256",
 						"name": "adjustedOffchainReserveUSD",
 						"type": "uint256"
@@ -303,19 +309,19 @@
 			]
 		},
 		"interface/IReserveOracle.sol": {
-			"keccak256": "0x4e19b24124b53071a99cefea1cfb35b90d44885209daf72c1c9609f451746c25",
+			"keccak256": "0xc1741e5690e8d1ffb43d421591d43fe5f8653755e4c53b7fbeb25d104ac28bfe",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://8c7060f29b4b1eaac4a05971e726c5ed8b5e346c2285dea248d7370526c0029a",
-				"dweb:/ipfs/QmahzKgFG7grePuMXhKwxZ4ppPH1ej5sPmRyq9EKgNhoP8"
+				"bzz-raw://cfe85847cdef1a522e8121f3c259b565d319c894d67fb7388b94845f998f318a",
+				"dweb:/ipfs/Qme8MVKCDhj3xQgcVQZTK2tva6PEkuGVmQhfEVPb4WrPYi"
 			]
 		},
 		"oracle/MockReserveOrcale.sol": {
-			"keccak256": "0xfca1ff9420c422d0afac82e90dc5f94fa5a8bf0ff747feb7f158ed3f44f7df78",
+			"keccak256": "0xc0b259df348c6507f7f863dcb57999d0d20b50dd3a6785a42587ff9c092c8e10",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://e7c45d7406d9c9479f9d744a787a07676aa0ced48446ed89bed7e44b2740c48c",
-				"dweb:/ipfs/QmQbodEKX3CAZzuq5KcLLP3EB89WN7kxws9ZrukVuYpcRe"
+				"bzz-raw://3557959cedc78d8abbd613b3ae6800d10ae3536435bf1b51c61b35e16923f46e",
+				"dweb:/ipfs/QmeSHigPh8C71t2mxw12ZmdwkB1FekZf6Vqxt9g9PrmVUu"
 			]
 		}
 	},

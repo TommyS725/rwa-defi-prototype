@@ -11,6 +11,7 @@ struct ReserveData {
 
 interface IReserveOracle {
     event ReserveDataUpdated(
+        bytes32 indexed requestId,
         uint256 adjustedOffchainReserveUSD,
         bool reserveValid,
         uint256 timestamp,

@@ -22,7 +22,7 @@ contract MockReserveOracle is Ownable, IReserveOracle {
             updatedAt: _updatedAt,
             attestationHash: _attestationHash
         });
-        emit ReserveDataUpdated(_adjustedOffchainReserveUSD, _reserveValid, _updatedAt,_attestationHash);
+        emit ReserveDataUpdated(_attestationHash,_adjustedOffchainReserveUSD, _reserveValid, _updatedAt,_attestationHash);
     }
 
     /**

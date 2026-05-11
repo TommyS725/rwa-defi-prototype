@@ -9,6 +9,12 @@
 				"anonymous": false,
 				"inputs": [
 					{
+						"indexed": true,
+						"internalType": "bytes32",
+						"name": "requestId",
+						"type": "bytes32"
+					},
+					{
 						"indexed": false,
 						"internalType": "uint256",
 						"name": "adjustedOffchainReserveUSD",
@@ -152,11 +158,11 @@
 	},
 	"sources": {
 		"interface/IReserveOracle.sol": {
-			"keccak256": "0x4e19b24124b53071a99cefea1cfb35b90d44885209daf72c1c9609f451746c25",
+			"keccak256": "0xf59df5c310db06a44889a16d97739e1f66d2472e0c0f40ee82902d4d3c5afd2f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://8c7060f29b4b1eaac4a05971e726c5ed8b5e346c2285dea248d7370526c0029a",
-				"dweb:/ipfs/QmahzKgFG7grePuMXhKwxZ4ppPH1ej5sPmRyq9EKgNhoP8"
+				"bzz-raw://b8d028bd019f9ed046d8e710510d870f27513a321ae185df9673c72f1fe245b0",
+				"dweb:/ipfs/QmV6KY4ym9usaYDorZ6c1d6fR4FzmsqXtUZxBonZ4wQVra"
 			]
 		}
 	},

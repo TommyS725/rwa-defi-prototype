@@ -1,0 +1,804 @@
+{
+	"id": "c31d030d059333fd6da3705baecee338",
+	"_format": "hh-sol-build-info-1",
+	"solcVersion": "0.8.34",
+	"solcLongVersion": "0.8.34+commit.80d5c536",
+	"input": {
+		"language": "Solidity",
+		"sources": {
+			"interface/IReserveOracle.sol": {
+				"content": "// SPDX-License-Identifier: MIT\n// Compatible with OpenZeppelin Contracts ^5.6.0\npragma solidity ^0.8.27;\n\nstruct ReserveData {\n    uint256 adjustedOffchainReserveUSD;\n    bool reserveValid;\n    uint256 updatedAt;\n    bytes32 attestationHash;\n}\n\ninterface IReserveOracle {\n    event ReserveDataUpdated(\n        bytes32 indexed requestId,\n        uint256 adjustedOffchainReserveUSD,\n        bool reserveValid,\n        uint256 timestamp,\n        bytes32 attestationHash\n    );\n\n    /**\n     * @notice Returns the latest reserve report.\n     */\n    function getLatestReserveData()\n        external\n        view\n        returns (ReserveData memory);\n\n    /**\n     * @notice Returns only the adjusted off-chain reserve value.\n     */\n    function getAdjustedOffchainReserveUSD()\n        external\n        view\n        returns (uint256);\n\n    /**\n     * @notice Returns whether the latest reserve report is valid.\n     */\n    function isReserveValid()\n        external\n        view\n        returns (bool);\n\n    /**\n     * @notice Returns the timestamp of the latest oracle update.\n     */\n    function lastUpdated()\n        external\n        view\n        returns (uint256);\n}"
+			}
+		},
+		"settings": {
+			"optimizer": {
+				"enabled": false,
+				"runs": 200
+			},
+			"outputSelection": {
+				"*": {
+					"": [
+						"ast"
+					],
+					"*": [
+						"abi",
+						"metadata",
+						"devdoc",
+						"userdoc",
+						"storageLayout",
+						"evm.legacyAssembly",
+						"evm.bytecode",
+						"evm.deployedBytecode",
+						"evm.methodIdentifiers",
+						"evm.gasEstimates",
+						"evm.assembly"
+					]
+				}
+			},
+			"remappings": []
+		}
+	},
+	"output": {
+		"contracts": {
+			"interface/IReserveOracle.sol": {
+				"IReserveOracle": {
+					"abi": [
+						{
+							"anonymous": false,
+							"inputs": [
+								{
+									"indexed": true,
+									"internalType": "bytes32",
+									"name": "requestId",
+									"type": "bytes32"
+								},
+								{
+									"indexed": false,
+									"internalType": "uint256",
+									"name": "adjustedOffchainReserveUSD",
+									"type": "uint256"
+								},
+								{
+									"indexed": false,
+									"internalType": "bool",
+									"name": "reserveValid",
+									"type": "bool"
+								},
+								{
+									"indexed": false,
+									"internalType": "uint256",
+									"name": "timestamp",
+									"type": "uint256"
+								},
+								{
+									"indexed": false,
+									"internalType": "bytes32",
+									"name": "attestationHash",
+									"type": "bytes32"
+								}
+							],
+							"name": "ReserveDataUpdated",
+							"type": "event"
+						},
+						{
+							"inputs": [],
+							"name": "getAdjustedOffchainReserveUSD",
+							"outputs": [
+								{
+									"internalType": "uint256",
+									"name": "",
+									"type": "uint256"
+								}
+							],
+							"stateMutability": "view",
+							"type": "function"
+						},
+						{
+							"inputs": [],
+							"name": "getLatestReserveData",
+							"outputs": [
+								{
+									"components": [
+										{
+											"internalType": "uint256",
+											"name": "adjustedOffchainReserveUSD",
+											"type": "uint256"
+										},
+										{
+											"internalType": "bool",
+											"name": "reserveValid",
+											"type": "bool"
+										},
+										{
+											"internalType": "uint256",
+											"name": "updatedAt",
+											"type": "uint256"
+										},
+										{
+											"internalType": "bytes32",
+											"name": "attestationHash",
+											"type": "bytes32"
+										}
+									],
+									"internalType": "struct ReserveData",
+									"name": "",
+									"type": "tuple"
+								}
+							],
+							"stateMutability": "view",
+							"type": "function"
+						},
+						{
+							"inputs": [],
+							"name": "isReserveValid",
+							"outputs": [
+								{
+									"internalType": "bool",
+									"name": "",
+									"type": "bool"
+								}
+							],
+							"stateMutability": "view",
+							"type": "function"
+						},
+						{
+							"inputs": [],
+							"name": "lastUpdated",
+							"outputs": [
+								{
+									"internalType": "uint256",
+									"name": "",
+									"type": "uint256"
+								}
+							],
+							"stateMutability": "view",
+							"type": "function"
+						}
+					],
+					"devdoc": {
+						"kind": "dev",
+						"methods": {},
+						"version": 1
+					},
+					"evm": {
+						"assembly": "",
+						"bytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"linkReferences": {},
+							"object": "",
+							"opcodes": "",
+							"sourceMap": ""
+						},
+						"deployedBytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"immutableReferences": {},
+							"linkReferences": {},
+							"object": "",
+							"opcodes": "",
+							"sourceMap": ""
+						},
+						"gasEstimates": null,
+						"legacyAssembly": null,
+						"methodIdentifiers": {
+							"getAdjustedOffchainReserveUSD()": "3e5d0ee0",
+							"getLatestReserveData()": "186f34d5",
+							"isReserveValid()": "ecf7139b",
+							"lastUpdated()": "d0b06f5d"
+						}
+					},
+					"metadata": "{\"compiler\":{\"version\":\"0.8.34+commit.80d5c536\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"requestId\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"adjustedOffchainReserveUSD\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"reserveValid\",\"type\":\"bool\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"attestationHash\",\"type\":\"bytes32\"}],\"name\":\"ReserveDataUpdated\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"getAdjustedOffchainReserveUSD\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLatestReserveData\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"adjustedOffchainReserveUSD\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"reserveValid\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"updatedAt\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"attestationHash\",\"type\":\"bytes32\"}],\"internalType\":\"struct ReserveData\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"isReserveValid\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"lastUpdated\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"getAdjustedOffchainReserveUSD()\":{\"notice\":\"Returns only the adjusted off-chain reserve value.\"},\"getLatestReserveData()\":{\"notice\":\"Returns the latest reserve report.\"},\"isReserveValid()\":{\"notice\":\"Returns whether the latest reserve report is valid.\"},\"lastUpdated()\":{\"notice\":\"Returns the timestamp of the latest oracle update.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"interface/IReserveOracle.sol\":\"IReserveOracle\"},\"evmVersion\":\"osaka\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"interface/IReserveOracle.sol\":{\"keccak256\":\"0xf59df5c310db06a44889a16d97739e1f66d2472e0c0f40ee82902d4d3c5afd2f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b8d028bd019f9ed046d8e710510d870f27513a321ae185df9673c72f1fe245b0\",\"dweb:/ipfs/QmV6KY4ym9usaYDorZ6c1d6fR4FzmsqXtUZxBonZ4wQVra\"]}},\"version\":1}",
+					"storageLayout": {
+						"storage": [],
+						"types": null
+					},
+					"userdoc": {
+						"kind": "user",
+						"methods": {
+							"getAdjustedOffchainReserveUSD()": {
+								"notice": "Returns only the adjusted off-chain reserve value."
+							},
+							"getLatestReserveData()": {
+								"notice": "Returns the latest reserve report."
+							},
+							"isReserveValid()": {
+								"notice": "Returns whether the latest reserve report is valid."
+							},
+							"lastUpdated()": {
+								"notice": "Returns the timestamp of the latest oracle update."
+							}
+						},
+						"version": 1
+					}
+				}
+			}
+		},
+		"sources": {
+			"interface/IReserveOracle.sol": {
+				"ast": {
+					"absolutePath": "interface/IReserveOracle.sol",
+					"exportedSymbols": {
+						"IReserveOracle": [
+							48
+						],
+						"ReserveData": [
+							10
+						]
+					},
+					"id": 49,
+					"license": "MIT",
+					"nodeType": "SourceUnit",
+					"nodes": [
+						{
+							"id": 1,
+							"literals": [
+								"solidity",
+								"^",
+								"0.8",
+								".27"
+							],
+							"nodeType": "PragmaDirective",
+							"src": "81:24:0"
+						},
+						{
+							"canonicalName": "ReserveData",
+							"id": 10,
+							"members": [
+								{
+									"constant": false,
+									"id": 3,
+									"mutability": "mutable",
+									"name": "adjustedOffchainReserveUSD",
+									"nameLocation": "140:26:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 10,
+									"src": "132:34:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_uint256",
+										"typeString": "uint256"
+									},
+									"typeName": {
+										"id": 2,
+										"name": "uint256",
+										"nodeType": "ElementaryTypeName",
+										"src": "132:7:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_uint256",
+											"typeString": "uint256"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 5,
+									"mutability": "mutable",
+									"name": "reserveValid",
+									"nameLocation": "177:12:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 10,
+									"src": "172:17:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_bool",
+										"typeString": "bool"
+									},
+									"typeName": {
+										"id": 4,
+										"name": "bool",
+										"nodeType": "ElementaryTypeName",
+										"src": "172:4:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_bool",
+											"typeString": "bool"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 7,
+									"mutability": "mutable",
+									"name": "updatedAt",
+									"nameLocation": "203:9:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 10,
+									"src": "195:17:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_uint256",
+										"typeString": "uint256"
+									},
+									"typeName": {
+										"id": 6,
+										"name": "uint256",
+										"nodeType": "ElementaryTypeName",
+										"src": "195:7:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_uint256",
+											"typeString": "uint256"
+										}
+									},
+									"visibility": "internal"
+								},
+								{
+									"constant": false,
+									"id": 9,
+									"mutability": "mutable",
+									"name": "attestationHash",
+									"nameLocation": "226:15:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 10,
+									"src": "218:23:0",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_bytes32",
+										"typeString": "bytes32"
+									},
+									"typeName": {
+										"id": 8,
+										"name": "bytes32",
+										"nodeType": "ElementaryTypeName",
+										"src": "218:7:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_bytes32",
+											"typeString": "bytes32"
+										}
+									},
+									"visibility": "internal"
+								}
+							],
+							"name": "ReserveData",
+							"nameLocation": "114:11:0",
+							"nodeType": "StructDefinition",
+							"scope": 49,
+							"src": "107:137:0",
+							"visibility": "public"
+						},
+						{
+							"abstract": false,
+							"baseContracts": [],
+							"canonicalName": "IReserveOracle",
+							"contractDependencies": [],
+							"contractKind": "interface",
+							"fullyImplemented": false,
+							"id": 48,
+							"linearizedBaseContracts": [
+								48
+							],
+							"name": "IReserveOracle",
+							"nameLocation": "256:14:0",
+							"nodeType": "ContractDefinition",
+							"nodes": [
+								{
+									"anonymous": false,
+									"eventSelector": "5fe1c9595354b2d498ce7822dd270607c5e3f87172b0eb5ed29f2bbfd5dcc547",
+									"id": 22,
+									"name": "ReserveDataUpdated",
+									"nameLocation": "283:18:0",
+									"nodeType": "EventDefinition",
+									"parameters": {
+										"id": 21,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 12,
+												"indexed": true,
+												"mutability": "mutable",
+												"name": "requestId",
+												"nameLocation": "327:9:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 22,
+												"src": "311:25:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_bytes32",
+													"typeString": "bytes32"
+												},
+												"typeName": {
+													"id": 11,
+													"name": "bytes32",
+													"nodeType": "ElementaryTypeName",
+													"src": "311:7:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_bytes32",
+														"typeString": "bytes32"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 14,
+												"indexed": false,
+												"mutability": "mutable",
+												"name": "adjustedOffchainReserveUSD",
+												"nameLocation": "354:26:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 22,
+												"src": "346:34:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												},
+												"typeName": {
+													"id": 13,
+													"name": "uint256",
+													"nodeType": "ElementaryTypeName",
+													"src": "346:7:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_uint256",
+														"typeString": "uint256"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 16,
+												"indexed": false,
+												"mutability": "mutable",
+												"name": "reserveValid",
+												"nameLocation": "395:12:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 22,
+												"src": "390:17:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_bool",
+													"typeString": "bool"
+												},
+												"typeName": {
+													"id": 15,
+													"name": "bool",
+													"nodeType": "ElementaryTypeName",
+													"src": "390:4:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_bool",
+														"typeString": "bool"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 18,
+												"indexed": false,
+												"mutability": "mutable",
+												"name": "timestamp",
+												"nameLocation": "425:9:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 22,
+												"src": "417:17:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												},
+												"typeName": {
+													"id": 17,
+													"name": "uint256",
+													"nodeType": "ElementaryTypeName",
+													"src": "417:7:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_uint256",
+														"typeString": "uint256"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 20,
+												"indexed": false,
+												"mutability": "mutable",
+												"name": "attestationHash",
+												"nameLocation": "452:15:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 22,
+												"src": "444:23:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_bytes32",
+													"typeString": "bytes32"
+												},
+												"typeName": {
+													"id": 19,
+													"name": "bytes32",
+													"nodeType": "ElementaryTypeName",
+													"src": "444:7:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_bytes32",
+														"typeString": "bytes32"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "301:172:0"
+									},
+									"src": "277:197:0"
+								},
+								{
+									"documentation": {
+										"id": 23,
+										"nodeType": "StructuredDocumentation",
+										"src": "480:61:0",
+										"text": " @notice Returns the latest reserve report."
+									},
+									"functionSelector": "186f34d5",
+									"id": 29,
+									"implemented": false,
+									"kind": "function",
+									"modifiers": [],
+									"name": "getLatestReserveData",
+									"nameLocation": "555:20:0",
+									"nodeType": "FunctionDefinition",
+									"parameters": {
+										"id": 24,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "575:2:0"
+									},
+									"returnParameters": {
+										"id": 28,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 27,
+												"mutability": "mutable",
+												"name": "",
+												"nameLocation": "-1:-1:-1",
+												"nodeType": "VariableDeclaration",
+												"scope": 29,
+												"src": "625:18:0",
+												"stateVariable": false,
+												"storageLocation": "memory",
+												"typeDescriptions": {
+													"typeIdentifier": "t_struct$_ReserveData_$10_memory_ptr",
+													"typeString": "struct ReserveData"
+												},
+												"typeName": {
+													"id": 26,
+													"nodeType": "UserDefinedTypeName",
+													"pathNode": {
+														"id": 25,
+														"name": "ReserveData",
+														"nameLocations": [
+															"625:11:0"
+														],
+														"nodeType": "IdentifierPath",
+														"referencedDeclaration": 10,
+														"src": "625:11:0"
+													},
+													"referencedDeclaration": 10,
+													"src": "625:11:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_struct$_ReserveData_$10_storage_ptr",
+														"typeString": "struct ReserveData"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "624:20:0"
+									},
+									"scope": 48,
+									"src": "546:99:0",
+									"stateMutability": "view",
+									"virtual": false,
+									"visibility": "external"
+								},
+								{
+									"documentation": {
+										"id": 30,
+										"nodeType": "StructuredDocumentation",
+										"src": "651:77:0",
+										"text": " @notice Returns only the adjusted off-chain reserve value."
+									},
+									"functionSelector": "3e5d0ee0",
+									"id": 35,
+									"implemented": false,
+									"kind": "function",
+									"modifiers": [],
+									"name": "getAdjustedOffchainReserveUSD",
+									"nameLocation": "742:29:0",
+									"nodeType": "FunctionDefinition",
+									"parameters": {
+										"id": 31,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "771:2:0"
+									},
+									"returnParameters": {
+										"id": 34,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 33,
+												"mutability": "mutable",
+												"name": "",
+												"nameLocation": "-1:-1:-1",
+												"nodeType": "VariableDeclaration",
+												"scope": 35,
+												"src": "821:7:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												},
+												"typeName": {
+													"id": 32,
+													"name": "uint256",
+													"nodeType": "ElementaryTypeName",
+													"src": "821:7:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_uint256",
+														"typeString": "uint256"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "820:9:0"
+									},
+									"scope": 48,
+									"src": "733:97:0",
+									"stateMutability": "view",
+									"virtual": false,
+									"visibility": "external"
+								},
+								{
+									"documentation": {
+										"id": 36,
+										"nodeType": "StructuredDocumentation",
+										"src": "836:78:0",
+										"text": " @notice Returns whether the latest reserve report is valid."
+									},
+									"functionSelector": "ecf7139b",
+									"id": 41,
+									"implemented": false,
+									"kind": "function",
+									"modifiers": [],
+									"name": "isReserveValid",
+									"nameLocation": "928:14:0",
+									"nodeType": "FunctionDefinition",
+									"parameters": {
+										"id": 37,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "942:2:0"
+									},
+									"returnParameters": {
+										"id": 40,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 39,
+												"mutability": "mutable",
+												"name": "",
+												"nameLocation": "-1:-1:-1",
+												"nodeType": "VariableDeclaration",
+												"scope": 41,
+												"src": "992:4:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_bool",
+													"typeString": "bool"
+												},
+												"typeName": {
+													"id": 38,
+													"name": "bool",
+													"nodeType": "ElementaryTypeName",
+													"src": "992:4:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_bool",
+														"typeString": "bool"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "991:6:0"
+									},
+									"scope": 48,
+									"src": "919:79:0",
+									"stateMutability": "view",
+									"virtual": false,
+									"visibility": "external"
+								},
+								{
+									"documentation": {
+										"id": 42,
+										"nodeType": "StructuredDocumentation",
+										"src": "1004:77:0",
+										"text": " @notice Returns the timestamp of the latest oracle update."
+									},
+									"functionSelector": "d0b06f5d",
+									"id": 47,
+									"implemented": false,
+									"kind": "function",
+									"modifiers": [],
+									"name": "lastUpdated",
+									"nameLocation": "1095:11:0",
+									"nodeType": "FunctionDefinition",
+									"parameters": {
+										"id": 43,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "1106:2:0"
+									},
+									"returnParameters": {
+										"id": 46,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 45,
+												"mutability": "mutable",
+												"name": "",
+												"nameLocation": "-1:-1:-1",
+												"nodeType": "VariableDeclaration",
+												"scope": 47,
+												"src": "1156:7:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												},
+												"typeName": {
+													"id": 44,
+													"name": "uint256",
+													"nodeType": "ElementaryTypeName",
+													"src": "1156:7:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_uint256",
+														"typeString": "uint256"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "1155:9:0"
+									},
+									"scope": 48,
+									"src": "1086:79:0",
+									"stateMutability": "view",
+									"virtual": false,
+									"visibility": "external"
+								}
+							],
+							"scope": 49,
+							"src": "246:921:0",
+							"usedErrors": [],
+							"usedEvents": [
+								22
+							]
+						}
+					],
+					"src": "81:1086:0"
+				},
+				"id": 0
+			}
+		}
+	}
+}

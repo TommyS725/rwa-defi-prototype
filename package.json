@@ -3,6 +3,8 @@
   "private": true,
   "packageManager": "pnpm@10.13.1",
   "scripts": {
-    "contracts:dev": "pnpm --filter @rwa/contracts dev"
+    "contracts:dev": "pnpm --filter @rwa/contracts dev",
+    "oracle-worker:dev": "pnpm --filter @rwa/oracle-worker dev",
+    "oracle-worker:deploy": "pnpm --filter @rwa/oracle-worker deploy"
   }
 }

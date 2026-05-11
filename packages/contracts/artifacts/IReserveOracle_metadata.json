@@ -1,0 +1,164 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "adjustedOffchainReserveUSD",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "bool",
+						"name": "reserveValid",
+						"type": "bool"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "attestationHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "ReserveDataUpdated",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "getAdjustedOffchainReserveUSD",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getLatestReserveData",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "adjustedOffchainReserveUSD",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bool",
+								"name": "reserveValid",
+								"type": "bool"
+							},
+							{
+								"internalType": "uint256",
+								"name": "updatedAt",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bytes32",
+								"name": "attestationHash",
+								"type": "bytes32"
+							}
+						],
+						"internalType": "struct ReserveData",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "isReserveValid",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "lastUpdated",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"getAdjustedOffchainReserveUSD()": {
+					"notice": "Returns only the adjusted off-chain reserve value."
+				},
+				"getLatestReserveData()": {
+					"notice": "Returns the latest reserve report."
+				},
+				"isReserveValid()": {
+					"notice": "Returns whether the latest reserve report is valid."
+				},
+				"lastUpdated()": {
+					"notice": "Returns the timestamp of the latest oracle update."
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"interface/IReserveOracle.sol": "IReserveOracle"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"interface/IReserveOracle.sol": {
+			"keccak256": "0x4e19b24124b53071a99cefea1cfb35b90d44885209daf72c1c9609f451746c25",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8c7060f29b4b1eaac4a05971e726c5ed8b5e346c2285dea248d7370526c0029a",
+				"dweb:/ipfs/QmahzKgFG7grePuMXhKwxZ4ppPH1ej5sPmRyq9EKgNhoP8"
+			]
+		}
+	},
+	"version": 1
+}

@@ -1,0 +1,8 @@
+{
+  "name": "rwa-defi-prototype",
+  "private": true,
+  "packageManager": "pnpm@10.13.1",
+  "scripts": {
+    "contracts:dev": "pnpm --filter @rwa/contracts dev"
+  }
+}

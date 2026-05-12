@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { createFactory } from "hono/factory";
+import { cors } from "hono/cors";
 import { zValidator } from "@hono/zod-validator";
 import type { Env } from "./lib/types";
 import { renderAdminPage } from "./lib/html";
@@ -13,6 +14,15 @@ const app = new Hono<AppEnv>();
 const factory = createFactory<AppEnv>();
 
 const SERVICE_NAME = "rwa-oracle-worker";
+
+app.use(
+  "*",
+  cors({
+    origin: "*",
+    allowMethods: ["GET", "POST", "OPTIONS"],
+    allowHeaders: ["Content-Type"],
+  }),
+);
 
 app.get("/health", (c) => c.json({ ok: true, service: SERVICE_NAME }));
 

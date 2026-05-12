@@ -1,0 +1,9 @@
+{
+  "chainId": 80002,
+  "chainName": "amoy",
+  "contracts": {
+    "RWAToken": "0x74e0d105Af35ED6d4212c3647758903aa98236Ac",
+    "RWATokenBridge": "0x33D1BD56C1725A17dE9F868FE2Fc1a4059e74cfC",
+    "BurnMintTokenPool": "0x42b1f7F33160D38620f4A51DE73Bdf7c6fC68d04"
+  }
+}

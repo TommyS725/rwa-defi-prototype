@@ -1,0 +1,13 @@
+{
+  "chainId": 11155111,
+  "chainName": "sepolia",
+  "contracts": {
+    "MockUSDC": "0xa94dD8860AA4aaBf53AE905d234cCF1ed0D7C811",
+    "MockReserveOracle": "0x9bb858CAa29b749acFB6843065D823e7EF41EE88",
+    "ReserveOracle": "0xdE41e41bfc46E54a897eaEEB9e09384143Ee49bB",
+    "RWAToken": "0xA9F14a61F54f7485C5B6f329BE76ecA42B6A9A68",
+    "RWAMintControllerVault": "0x152bE1dfD8cBE3C4985b54A5f10D1Bb9784A0DFF",
+    "RWATokenBridge": "0x43e23B5476990de7c208B382DA473d7E05aB3147",
+    "LockReleaseTokenPool": "0xb0d86d541997465B3f8699D4558fe5e0fE21094D"
+  }
+}

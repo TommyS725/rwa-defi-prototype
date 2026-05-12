@@ -2,10 +2,15 @@
   "name": "rwa-defi-prototype",
   "private": true,
   "packageManager": "pnpm@10.13.1",
+  "exports": {
+    ".": "./generated/index.ts",
+    "./generated": "./generated/index.ts"
+  },
   "scripts": {
     "contracts:dev": "pnpm --filter @rwa/contracts dev",
     "contracts:simulate:functions": "pnpm --filter @rwa/contracts simulate:functions",
     "contracts:source:copy": "pnpm --filter @rwa/contracts source:copy",
+    "contracts:generate": "pnpm --filter @rwa/contracts generate",
     "oracle-worker:dev": "pnpm --filter @rwa/oracle-worker dev",
     "oracle-worker:deploy": "pnpm --filter @rwa/oracle-worker deploy"
   }

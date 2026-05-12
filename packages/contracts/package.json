@@ -6,11 +6,13 @@
   "scripts": {
     "dev": "remixd",
     "simulate:functions": "node scripts/simulate-functions.js",
-    "source:copy": "node scripts/print-functions-source.js"
+    "source:copy": "node scripts/print-functions-source.js",
+    "generate": "tsx scripts/generate-types.ts"
   },
   "devDependencies": {
     "@chainlink/functions-toolkit": "^0.3.2",
     "@remix-project/remixd": "^0.6.64",
+    "@types/node": "^25.6.2",
     "ethers": "^6.16.0",
     "tsx": "^4.21.0"
   }

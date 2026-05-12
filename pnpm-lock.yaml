@@ -38,6 +38,9 @@ importers:
       '@remix-project/remixd':
         specifier: ^0.6.64
         version: 0.6.64(bufferutil@4.0.7)(utf-8-validate@6.0.3)(webauthn-p256@0.0.10)
+      '@types/node':
+        specifier: ^25.6.2
+        version: 25.6.2
       ethers:
         specifier: ^6.16.0
         version: 6.16.0(bufferutil@4.0.7)(utf-8-validate@6.0.3)

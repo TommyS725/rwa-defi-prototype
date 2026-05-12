@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "exports": {
+    ".": "./generated/index.ts",
+    "./generated": "./generated/index.ts"
+  },
   "scripts": {
     "dev": "remixd",
     "simulate:functions": "node scripts/simulate-functions.js",

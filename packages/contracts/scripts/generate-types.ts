@@ -168,27 +168,25 @@ function generateDeploymentExports(
     for (const [contractName, address] of Object.entries(
       deployment.contracts,
     ).sort()) {
-      if (!abis[contractName]) {
-        console.warn(
-          `Skipping ${chainKey}.${contractName}: no matching ABI metadata`,
-        );
-        continue;
-      }
-
       if (!isAddress(address)) {
         console.warn(
           `Skipping ${chainKey}.${contractName}: invalid address ${address}`,
         );
         continue;
       }
-
+      const abi = abis[contractName];
+      if (!abi) {
+        console.log(
+          `No ABI found for ${contractName} used in ${chainKey}. Exporting without ABI reference.`,
+        );
+      }
       const abiVarName = `${toCamelCase(contractName)}Abi`;
+      const abiLine = abi ? `,\n    abi: ${abiVarName}` : "";
 
       entries.push(`  ${toIdentifier(contractName)}: {
     chainId: ${deployment.chainId},
     chainName: "${deployment.chainName}",
-    address: "${address}",
-    abi: ${abiVarName}
+    address: "${address}"${abiLine}
   }`);
     }
 

@@ -5896,6 +5896,11 @@ export const contractAbis = {
 } as const;
 
 export const amoyContracts = {
+  BurnMintTokenPool: {
+    chainId: 80002,
+    chainName: "amoy",
+    address: "0x42b1f7F33160D38620f4A51DE73Bdf7c6fC68d04"
+  },
   RWAToken: {
     chainId: 80002,
     chainName: "amoy",
@@ -5911,6 +5916,11 @@ export const amoyContracts = {
 } as const;
 
 export const sepoliaContracts = {
+  LockReleaseTokenPool: {
+    chainId: 11155111,
+    chainName: "sepolia",
+    address: "0xb0d86d541997465B3f8699D4558fe5e0fE21094D"
+  },
   MockReserveOracle: {
     chainId: 11155111,
     chainName: "sepolia",

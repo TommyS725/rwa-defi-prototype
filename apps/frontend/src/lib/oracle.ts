@@ -1,25 +1,16 @@
+import type { AppType } from "@rwa/oracle-worker";
+import { hc, type InferResponseType } from "hono/client";
 import { env } from "./env";
 
-export type ReserveReport = {
-  reportId: string;
-  grossAssetValueUSD: string;
-  liabilitiesUSD: string;
-  feesUSD: string;
-  adjustedOffchainReserveUSD: string;
-  grossAssetValueUSD18: string;
-  liabilitiesUSD18: string;
-  feesUSD18: string;
-  adjustedOffchainReserveUSD18: string;
-  reserveValid: boolean;
-  note: string;
-  currency: "USD";
-  decimals: 18;
-  updatedAt: number;
-  attestationHash: string;
-};
+const oracleClient = hc<AppType>(env.oracleWorkerUrl);
+
+export const oracleApiUrl = oracleClient.api.v1.reserve.latest.$url().toString();
+export const oracleAdminUrl = oracleClient.admin.$url().toString();
+
+export type ReserveReport = InferResponseType<typeof oracleClient.api.v1.reserve.latest.$get, 200>;
 
 export async function fetchReserveReport(): Promise<ReserveReport> {
-  const response = await fetch(env.oracleApiUrl);
+  const response = await oracleClient.api.v1.reserve.latest.$get();
   if (!response.ok) throw new Error(`Oracle API returned ${response.status}`);
-  return response.json() as Promise<ReserveReport>;
+  return response.json();
 }

@@ -1,7 +1,6 @@
 type Env = {
   reownProjectId: string;
-  oracleApiUrl: string;
-  oracleAdminUrl: string;
+  oracleWorkerUrl: string;
   sepoliaCcipSelector: bigint;
   amoyCcipSelector: bigint;
   sepoliaExplorerUrl: string;
@@ -36,10 +35,11 @@ function stripSlash(value: string) {
   return value.replace(/\/+$/, "");
 }
 
+const oracleWorkerUrl = stripSlash(required("VITE_ORACLE_WORKER_URL"));
+
 export const env: Env = {
   reownProjectId: required("VITE_REOWN_PROJECT_ID"),
-  oracleApiUrl: required("VITE_ORACLE_API_URL"),
-  oracleAdminUrl: required("VITE_ORACLE_ADMIN_URL"),
+  oracleWorkerUrl,
   sepoliaCcipSelector: requiredBigInt("VITE_SEPOLIA_CCIP_SELECTOR"),
   amoyCcipSelector: requiredBigInt("VITE_AMOY_CCIP_SELECTOR"),
   sepoliaExplorerUrl: stripSlash(required("VITE_SEPOLIA_EXPLORER_URL")),

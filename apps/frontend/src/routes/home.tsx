@@ -14,9 +14,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useContractTransaction } from "@/hooks/useTransaction";
 import { chainConfig, explorerTxUrl } from "@/lib/chains";
 import { contracts, USDC_DECIMALS } from "@/lib/contracts";
-import { env } from "@/lib/env";
 import { formatIntegerString, formatTimestamp, formatTokenAmount, formatUsd18 } from "@/lib/format";
-import { fetchReserveReport } from "@/lib/oracle";
+import { fetchReserveReport, oracleAdminUrl } from "@/lib/oracle";
 
 type SuccessfulRead = { status: "success"; result: unknown };
 
@@ -216,7 +215,7 @@ export function HomePage() {
             </div>
             <div className="flex flex-wrap gap-3">
               <Button asChild variant="outline">
-                <a href={env.oracleAdminUrl} target="_blank" rel="noreferrer">
+                <a href={oracleAdminUrl} target="_blank" rel="noreferrer">
                   Open API admin
                 </a>
               </Button>

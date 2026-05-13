@@ -77,6 +77,9 @@ The worker is Hono on Cloudflare Workers.
 
 - Preserve CORS unless intentionally changing frontend access.
 - Preserve `/api/v1/reserve/latest` response shape unless updating Chainlink Functions and frontend consumers together.
+- Export the Hono RPC `AppType` and narrower route-group types from the worker when changing typed API routes.
+- The frontend should use `hono/client` and inferred RPC response types instead of duplicating worker API response types.
+- Derive frontend worker endpoint links from the typed Hono client with `$url()` instead of manually appending route paths in env handling.
 - KV binding name is `RWA_ORACLE_KV`.
 
 ## Formatting

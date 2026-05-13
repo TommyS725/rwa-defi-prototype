@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { chainConfig, explorerAddressUrl } from "@/lib/chains";
 import { contracts } from "@/lib/contracts";
 import { env } from "@/lib/env";
+import { oracleAdminUrl, oracleApiUrl } from "@/lib/oracle";
 
 const descriptions = [
   ["MockUSDC", "Test USDC used to mint mTRWA tokens on Sepolia."],
@@ -34,8 +35,8 @@ export function MetadataPage() {
             <CardTitle>Project links</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-start gap-3">
-            <ExternalLink href={env.oracleApiUrl}>Oracle API endpoint</ExternalLink>
-            <ExternalLink href={env.oracleAdminUrl}>Oracle API admin</ExternalLink>
+            <ExternalLink href={oracleApiUrl}>Oracle API endpoint</ExternalLink>
+            <ExternalLink href={oracleAdminUrl}>Oracle API admin</ExternalLink>
             <ExternalLink href={env.ccipExplorerUrl}>CCIP Explorer</ExternalLink>
             <ExternalLink href={env.ccipTokenManagerUrl}>CCIP Token Manager (mTRWA)</ExternalLink>
             {env.githubRepoUrl ? (

@@ -12,8 +12,7 @@ Example:
 
 ```txt
 VITE_REOWN_PROJECT_ID=
-VITE_ORACLE_API_URL=https://oracle-worker.rwa-defi-prototype.tommyshum.com/api/v1/reserve/latest
-VITE_ORACLE_ADMIN_URL=https://oracle-worker.rwa-defi-prototype.tommyshum.com/admin
+VITE_ORACLE_WORKER_URL=https://oracle-worker.rwa-defi-prototype.tommyshum.com
 VITE_SEPOLIA_CCIP_SELECTOR=16015286601757825753
 VITE_AMOY_CCIP_SELECTOR=16281711391670634445
 VITE_SEPOLIA_EXPLORER_URL=https://sepolia.etherscan.io
@@ -29,8 +28,7 @@ The frontend validates required env vars at startup.
 
 Store as GitHub Actions Variables:
 
-- `VITE_ORACLE_API_URL`
-- `VITE_ORACLE_ADMIN_URL`
+- `VITE_ORACLE_WORKER_URL`
 - `VITE_SEPOLIA_CCIP_SELECTOR`
 - `VITE_AMOY_CCIP_SELECTOR`
 - `VITE_SEPOLIA_EXPLORER_URL`

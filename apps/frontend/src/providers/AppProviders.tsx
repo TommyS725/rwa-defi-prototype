@@ -17,10 +17,10 @@ createAppKit({
   networks,
   projectId: env.reownProjectId,
   metadata: {
-    name: "RWA Demo",
-    description: "RWA tokenization prototype demo",
+    name: "mTRWA Demo",
+    description: "Reserve-backed mTRWA demo for oracle updates, minting, redeeming, and CCIP transfers.",
     url: window.location.origin,
-    icons: [`${window.location.origin}/favicon.ico`],
+    icons: [`${window.location.origin}/favicon.svg`],
   },
   enableNetworkSwitch: true,
   features: { swaps: false, onramp: false, socials: false, email: false },

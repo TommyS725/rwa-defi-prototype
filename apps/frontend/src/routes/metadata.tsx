@@ -8,13 +8,13 @@ import { contracts } from "@/lib/contracts";
 import { env } from "@/lib/env";
 
 const descriptions = [
-  ["MockUSDC", "Test USDC used to mint RWA tokens on Sepolia."],
+  ["MockUSDC", "Test USDC used to mint mTRWA tokens on Sepolia."],
   ["ReserveOracle", "Chainlink Functions-backed oracle that stores adjusted off-chain reserve data."],
   ["MockReserveOracle", "Mock oracle contract retained in deployment metadata for testing."],
-  ["RWAMintControllerVault", "Mints and redeems RWA using MockUSDC, oracle reserve data, and vault liquidity."],
-  ["RWAToken", "ERC-20 RWA token. Sepolia is canonical; Amoy is the destination-chain representation."],
-  ["RWATokenBridge", "CCIP sender bridge used to transfer RWA representation between Sepolia and Amoy."],
-  ["TokenPool", "CCIP token pool contract wired to the source or destination RWA token for cross-chain movement."],
+  ["RWAMintControllerVault", "Mints and redeems mTRWA using MockUSDC, oracle reserve data, and vault liquidity."],
+  ["RWAToken", "ERC-20 mTRWA token. Sepolia is canonical; Amoy is the destination-chain representation."],
+  ["RWATokenBridge", "CCIP sender bridge used to transfer mTRWA representation between Sepolia and Amoy."],
+  ["TokenPool", "CCIP token pool contract wired to the source or destination mTRWA token for cross-chain movement."],
 ] as const;
 
 export function MetadataPage() {
@@ -37,7 +37,7 @@ export function MetadataPage() {
             <ExternalLink href={env.oracleApiUrl}>Oracle API endpoint</ExternalLink>
             <ExternalLink href={env.oracleAdminUrl}>Oracle API admin</ExternalLink>
             <ExternalLink href={env.ccipExplorerUrl}>CCIP Explorer</ExternalLink>
-            <ExternalLink href={env.ccipTokenManagerUrl}>CCIP Token Manager</ExternalLink>
+            <ExternalLink href={env.ccipTokenManagerUrl}>CCIP Token Manager (mTRWA)</ExternalLink>
             {env.githubRepoUrl ? (
               <ExternalLink href={env.githubRepoUrl}>GitHub repository</ExternalLink>
             ) : (

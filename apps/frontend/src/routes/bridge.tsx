@@ -1,6 +1,6 @@
 import { useAppKitAccount } from "@reown/appkit/react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import { ArrowLeftRight } from "lucide-react";
+import { useMemo, useState } from "react";
 import { type Address, decodeEventLog, zeroAddress } from "viem";
 import { useReadContract } from "wagmi";
 import { ExternalLink } from "@/components/ExternalLink";
@@ -9,34 +9,36 @@ import { NetworkAction } from "@/components/NetworkAction";
 import { PageHeader } from "@/components/PageHeader";
 import { TxStatus } from "@/components/TxStatus";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { chainConfig, ccipMessageUrl, explorerAddressUrl, explorerTxUrl, type ChainKey } from "@/lib/chains";
 import { contracts, erc20Abi } from "@/lib/contracts";
 import { formatTokenAmount, parseTokenAmount } from "@/lib/format";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { useRwaDecimals } from "@/hooks/useTokenDecimals";
 import { useContractTransaction } from "@/hooks/useTransaction";
 
-const directions: Array<{ source: ChainKey; destination: ChainKey; label: string }> = [
-  { source: "sepolia", destination: "amoy", label: "Sepolia to Polygon Amoy" },
-  { source: "amoy", destination: "sepolia", label: "Polygon Amoy to Sepolia" },
+const directions: Array<{ source: ChainKey; destination: ChainKey }> = [
+  { source: "sepolia", destination: "amoy" },
+  { source: "amoy", destination: "sepolia" },
 ];
 
 export function BridgePage() {
   const { address } = useAppKitAccount();
   const account = (address ?? zeroAddress) as Address;
-  const queryClient = useQueryClient();
   const tx = useContractTransaction();
   const fundTx = useContractTransaction();
   const [directionIndex, setDirectionIndex] = useState(0);
   const [amount, setAmount] = useState("");
   const [linkFundAmount, setLinkFundAmount] = useState("");
+  const debouncedAmount = useDebouncedValue(amount);
   const direction = directions[directionIndex];
   const { source, destination } = direction;
   const { decimals } = useRwaDecimals(source);
   const amountUnits = useMemo(() => parseTokenAmount(amount, decimals), [amount, decimals]);
+  const sponsorFeeAmountUnits = useMemo(() => parseTokenAmount(debouncedAmount, decimals), [debouncedAmount, decimals]);
   const sepoliaBalance = useReadContract({
     address: contracts.sepolia.RWAToken.address,
     abi: contracts.sepolia.RWAToken.abi,
@@ -67,7 +69,7 @@ export function BridgePage() {
     functionName: "linkToken",
     chainId: chainConfig[source].id,
   });
-  const linkAddress = linkToken.data as Address | undefined;
+  const linkAddress = linkToken.data;
   const linkDecimals = useReadContract({
     address: linkAddress,
     abi: erc20Abi,
@@ -94,72 +96,82 @@ export function BridgePage() {
     address: contracts[source].RWATokenBridge.address,
     abi: contracts[source].RWATokenBridge.abi,
     functionName: "getFeePayLINK",
-    args: [chainConfig[destination].ccipSelector, account, amountUnits ?? 0n],
+    args: [chainConfig[destination].ccipSelector, account, sponsorFeeAmountUnits ?? 0n],
     chainId: chainConfig[source].id,
-    query: { enabled: Boolean(address && amountUnits && amountUnits > 0n) },
+    query: { enabled: Boolean(address && sponsorFeeAmountUnits && sponsorFeeAmountUnits > 0n) },
   });
   const needsApproval =
-    Boolean(address) &&
-    amountUnits !== undefined &&
-    amountUnits > 0n &&
-    ((allowance.data as bigint | undefined) ?? 0n) < amountUnits;
+    Boolean(address) && amountUnits !== undefined && amountUnits > 0n && (allowance.data ?? 0n) < amountUnits;
   const resolvedLinkDecimals = Number(linkDecimals.data ?? 18);
-  const linkBalanceValue = linkBalance.data as bigint | undefined;
-  const sponsorFeeValue = sponsorFee.data as bigint | undefined;
+  const linkBalanceValue = linkBalance.data;
+  const sponsorFeeValue = sponsorFee.data;
   const hasSponsorLink = sponsorFeeValue === undefined || (linkBalanceValue ?? 0n) >= sponsorFeeValue;
-  const actionDisabled = !amountUnits || amountUnits <= 0n || (!needsApproval && !hasSponsorLink);
+  const balance = source === "sepolia" ? sepoliaBalance.data : source === "amoy" ? amoyBalance.data : undefined;
+  const enoughBalance = balance === undefined || amountUnits === undefined || balance >= amountUnits;
+  const actionDisabled =
+    !amountUnits ||
+    !balance ||
+    amountUnits <= 0n ||
+    debouncedAmount !== amount ||
+    !enoughBalance ||
+    (!needsApproval && !hasSponsorLink);
   const linkFundUnits = useMemo(
     () => parseTokenAmount(linkFundAmount, resolvedLinkDecimals),
     [linkFundAmount, resolvedLinkDecimals],
   );
-  useEffect(() => {
-    if (!tx.receipt) return;
-    for (const log of tx.receipt.logs) {
+  function setMessageIdFromReceipt(receipt: { logs: readonly { data: `0x${string}`; topics: `0x${string}`[] }[] }) {
+    for (const log of receipt.logs) {
+      if (log.topics.length === 0) continue;
       try {
-        const event = decodeEventLog({ abi: contracts[source].RWATokenBridge.abi, data: log.data, topics: log.topics });
+        const event = decodeEventLog({
+          abi: contracts[source].RWATokenBridge.abi,
+          data: log.data,
+          topics: log.topics as [`0x${string}`, ...`0x${string}`[]],
+        });
         if (event.eventName === "TokensSent") {
           tx.setMessageId(String(event.args.messageId));
           return;
         }
       } catch {}
     }
-  }, [source, tx, tx.receipt]);
+  }
+
   async function submit() {
     if (!amountUnits || amountUnits <= 0n || !address) return;
     if (needsApproval)
-      await tx.writeAsync({
+      await tx.writeAndInvalidateQueries({
         address: contracts[source].RWAToken.address,
         abi: contracts[source].RWAToken.abi,
         functionName: "approve",
         args: [contracts[source].RWATokenBridge.address, amountUnits],
         chainId: chainConfig[source].id,
       });
-    else
-      await tx.writeAsync({
+    else {
+      const { receipt } = await tx.writeAndInvalidateQueries({
         address: contracts[source].RWATokenBridge.address,
         abi: contracts[source].RWATokenBridge.abi,
         functionName: "sendTokenSponsored",
         args: [chainConfig[destination].ccipSelector, address as Address, amountUnits],
         chainId: chainConfig[source].id,
       });
-    await queryClient.invalidateQueries();
+      setMessageIdFromReceipt(receipt);
+    }
   }
   async function fundBridgeLink() {
     if (!linkAddress || !linkFundUnits || linkFundUnits <= 0n) return;
-    await fundTx.writeAsync({
+    await fundTx.writeAndInvalidateQueries({
       address: linkAddress,
       abi: erc20Abi,
       functionName: "transfer",
       args: [contracts[source].RWATokenBridge.address, linkFundUnits],
       chainId: chainConfig[source].id,
     });
-    await queryClient.invalidateQueries();
   }
   return (
     <div>
       <PageHeader
-        title="Bridge RWA"
-        description="Transfer RWA between Sepolia and Polygon Amoy using the deployed CCIP bridge contracts."
+        title="Bridge mTRWA"
+        description="Transfer mTRWA between Sepolia and Polygon Amoy using the deployed CCIP bridge contracts."
       />
       <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
         <Card>
@@ -169,21 +181,21 @@ export function BridgePage() {
           <CardContent>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="direction">Direction</FieldLabel>
-                <Select value={String(directionIndex)} onValueChange={(value) => setDirectionIndex(Number(value))}>
-                  <SelectTrigger id="direction">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {directions.map((item, index) => (
-                        <SelectItem key={item.label} value={String(index)}>
-                          {item.label}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                <div className="flex items-center gap-2">
+                  <div id="direction" className="flex h-10 flex-1 items-center text-lg font-semibold px-3">
+                    {chainConfig[source].name} -&gt; {chainConfig[destination].name}
+                  </div>
+                  <Button
+                    aria-label="Reverse bridge direction"
+                    size="icon"
+                    type="button"
+                    variant="ghost"
+                    dataIconClassName="size-16"
+                    onClick={() => setDirectionIndex((current) => (current === 0 ? 1 : 0))}
+                  >
+                    <ArrowLeftRight data-icon="inline-start" />
+                  </Button>
+                </div>
               </Field>
               <Field>
                 <FieldLabel htmlFor="bridge-amount">Amount</FieldLabel>
@@ -202,7 +214,11 @@ export function BridgePage() {
                 pending={tx.isPending}
                 onClick={submit}
               >
-                {needsApproval ? "Approve RWA" : "Send sponsored CCIP transfer"}
+                {enoughBalance
+                  ? needsApproval
+                    ? "Approve mTRWA"
+                    : "Send sponsored CCIP transfer"
+                  : `Insufficient mTRWA balance on ${chainConfig[source].name}`}
               </NetworkAction>
               <TxStatus
                 hash={tx.hash}
@@ -223,15 +239,9 @@ export function BridgePage() {
             <CardContent>
               <InfoRow label="Source chain" value={chainConfig[source].name} />
               <InfoRow label="Destination chain" value={chainConfig[destination].name} />
-              <InfoRow
-                label="Sepolia RWA"
-                value={formatTokenAmount(sepoliaBalance.data as bigint | undefined, 18, 4)}
-              />
-              <InfoRow label="Amoy RWA" value={formatTokenAmount(amoyBalance.data as bigint | undefined, 18, 4)} />
-              <InfoRow
-                label="Source allowance"
-                value={formatTokenAmount(allowance.data as bigint | undefined, decimals, 4)}
-              />
+              <InfoRow label="Sepolia mTRWA" value={formatTokenAmount(sepoliaBalance.data, 18, 4)} />
+              <InfoRow label="Amoy mTRWA" value={formatTokenAmount(amoyBalance.data, 18, 4)} />
+              <InfoRow label="Source allowance" value={formatTokenAmount(allowance.data, decimals, 4)} />
             </CardContent>
           </Card>
           <Card>
@@ -248,9 +258,6 @@ export function BridgePage() {
                   label="Expected Sponsor fee"
                   value={`${formatTokenAmount(sponsorFeeValue, resolvedLinkDecimals, 6)} ${String(linkSymbol.data ?? "LINK")}`}
                 />
-                {linkAddress ? (
-                  <ExternalLink href={explorerAddressUrl(source, linkAddress)}>LINK token contract</ExternalLink>
-                ) : null}
                 <Field>
                   <FieldLabel htmlFor="link-fund-amount">LINK amount to fund</FieldLabel>
                   <Input
@@ -285,20 +292,20 @@ export function BridgePage() {
               </FieldGroup>
             </CardContent>
           </Card>
-          <Alert>
-            <AlertTitle>Canonical accounting</AlertTitle>
-            <AlertDescription>
-              Sepolia is the canonical issuing chain. Amoy is the destination-chain representation; transfer does not
-              change canonical accounting.
-            </AlertDescription>
-          </Alert>
-          <Alert>
-            <AlertTitle>Sponsored fees</AlertTitle>
-            <AlertDescription>
-              This demo uses sendTokenSponsored, so CCIP fees are paid by LINK already funded on the bridge contract.
-            </AlertDescription>
-          </Alert>
         </div>
+        <Alert>
+          <AlertTitle>Canonical accounting</AlertTitle>
+          <AlertDescription>
+            Sepolia is the canonical issuing chain. Amoy is the destination-chain representation; transfer does not
+            change canonical accounting.
+          </AlertDescription>
+        </Alert>
+        <Alert>
+          <AlertTitle>Sponsored fees</AlertTitle>
+          <AlertDescription>
+            This demo uses sendTokenSponsored, so CCIP fees are paid by LINK already funded on the bridge contract.
+          </AlertDescription>
+        </Alert>
       </div>
     </div>
   );

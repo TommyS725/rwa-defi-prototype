@@ -1,5 +1,4 @@
 import { useAppKitAccount } from "@reown/appkit/react";
-import { useQueryClient } from "@tanstack/react-query";
 import { type Address, zeroAddress } from "viem";
 import { useReadContract } from "wagmi";
 import { InfoRow } from "@/components/InfoRow";
@@ -15,7 +14,6 @@ import { useContractTransaction } from "@/hooks/useTransaction";
 export function FaucetPage() {
   const { address } = useAppKitAccount();
   const account = (address ?? zeroAddress) as Address;
-  const queryClient = useQueryClient();
   const tx = useContractTransaction();
   const balance = useReadContract({
     address: contracts.sepolia.MockUSDC.address,
@@ -39,35 +37,34 @@ export function FaucetPage() {
     functionName: "getFaucetAmount",
     chainId: chainConfig.sepolia.id,
   });
-  const last = (lastFaucet.data as bigint | undefined) ?? 0n;
+  const last = lastFaucet.data ?? 0n;
   const availableAt = last + 3600n;
   const canRequest = last === 0n || BigInt(Math.floor(Date.now() / 1000)) >= availableAt;
   async function requestFaucet() {
-    await tx.writeAsync({
+    await tx.writeAndInvalidateQueries({
       address: contracts.sepolia.MockUSDC.address,
       abi: contracts.sepolia.MockUSDC.abi,
       functionName: "faucet",
       chainId: chainConfig.sepolia.id,
     });
-    await queryClient.invalidateQueries();
   }
   return (
     <div>
-      <PageHeader title="MockUSDC faucet" description="Request Sepolia MockUSDC for minting RWA tokens in the demo." />
+      <PageHeader
+        title="MockUSDC faucet"
+        description="Request Sepolia MockUSDC for minting mTRWA tokens in the demo."
+      />
       <Card>
         <CardHeader>
           <CardTitle>Faucet status</CardTitle>
         </CardHeader>
         <CardContent>
-          <InfoRow
-            label="Your MockUSDC balance"
-            value={`${formatTokenAmount(balance.data as bigint | undefined, USDC_DECIMALS, 2)} mUSDC`}
-          />
+          <InfoRow label="Your MockUSDC balance" value={`${formatTokenAmount(balance.data, USDC_DECIMALS, 2)} mUSDC`} />
           <InfoRow label="Last faucet request" value={formatTimestamp(last)} />
           <InfoRow label="Next available" value={canRequest ? "Now" : formatTimestamp(availableAt)} />
           <InfoRow
             label="Reported faucet amount"
-            value={`${formatTokenAmount(faucetAmount.data as bigint | undefined, USDC_DECIMALS, 2)} mUSDC`}
+            value={`${formatTokenAmount(faucetAmount.data, USDC_DECIMALS, 2)} mUSDC`}
           />
         </CardContent>
         <CardFooter className="flex-col items-start gap-4">

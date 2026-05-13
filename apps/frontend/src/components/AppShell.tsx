@@ -1,12 +1,11 @@
 import { useAppKit, useAppKitAccount, useAppKitNetwork, AppKitAccountButton } from "@reown/appkit/react";
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { Coins, Droplets, Home, Info, Repeat, Send, ShieldCheck } from "lucide-react";
+import { ContractEventSync } from "@/components/ContractEventSync";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { useContractEventRefresh } from "@/hooks/useContractEventRefresh";
 import { chainConfig } from "@/lib/chains";
-import { shortenAddress } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 const nav = [
@@ -24,16 +23,18 @@ export function AppShell() {
   const { address, isConnected } = useAppKitAccount();
   const { chainId } = useAppKitNetwork();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
-  useContractEventRefresh();
   const activeChain = Object.values(chainConfig).find((chain) => chain.id === chainId);
   const chainLabel = chainId ? `${activeChain?.name ?? "Unsupported"} (${chainId})` : "No chain";
   return (
     <div className="min-h-screen">
+      <ContractEventSync />
       <header className="sticky top-0 z-20 border-b bg-background/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">RWA prototype</p>
+              <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                rwa defi prototype
+              </p>
               <h1 className="text-xl font-semibold">Reserve-backed token demo</h1>
             </div>
             <div className="flex flex-wrap items-center gap-2">
@@ -41,12 +42,13 @@ export function AppShell() {
                 {chainLabel}
               </Badge>
 
-              {
-                isConnected ? <AppKitAccountButton /> :
-                  <Button className="min-w-[160px]" variant="outline" onClick={() => void open()}>
-                    Connect wallet
-                  </Button>
-              }
+              {isConnected ? (
+                <AppKitAccountButton />
+              ) : (
+                <Button className="min-w-[160px]" variant="outline" onClick={() => void open()}>
+                  Connect wallet
+                </Button>
+              )}
               <ThemeToggle />
             </div>
           </div>

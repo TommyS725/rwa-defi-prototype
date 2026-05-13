@@ -1,5 +1,4 @@
 import { useAppKitAccount } from "@reown/appkit/react";
-import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { type Address, isAddress, zeroAddress } from "viem";
 import { useReadContract } from "wagmi";
@@ -16,6 +15,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { chainConfig, explorerTxUrl, type ChainKey } from "@/lib/chains";
 import { contracts, erc20Abi } from "@/lib/contracts";
 import { formatTokenAmount, parseTokenAmount, shortenAddress } from "@/lib/format";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { useContractTransaction } from "@/hooks/useTransaction";
 
 type TokenOption = {
@@ -33,8 +33,8 @@ type SpenderOption = {
 
 const tokenOptions = [
   { id: "sepolia-usdc", label: "Sepolia MockUSDC", chain: "sepolia", address: contracts.sepolia.MockUSDC.address },
-  { id: "sepolia-rwa", label: "Sepolia RWA", chain: "sepolia", address: contracts.sepolia.RWAToken.address },
-  { id: "amoy-rwa", label: "Amoy RWA", chain: "amoy", address: contracts.amoy.RWAToken.address },
+  { id: "sepolia-rwa", label: "Sepolia mTRWA", chain: "sepolia", address: contracts.sepolia.RWAToken.address },
+  { id: "amoy-rwa", label: "Amoy mTRWA", chain: "amoy", address: contracts.amoy.RWAToken.address },
 ] as const satisfies readonly TokenOption[];
 
 const customSpenderId = "custom";
@@ -63,17 +63,17 @@ const presets = [
     spenderId: "controller",
   },
   {
-    label: "Sepolia RWA -> Controller",
+    label: "Sepolia mTRWA -> Controller",
     tokenId: "sepolia-rwa",
     spenderId: "controller",
   },
   {
-    label: "Sepolia RWA -> Bridge",
+    label: "Sepolia mTRWA -> Bridge",
     tokenId: "sepolia-rwa",
     spenderId: "bridge",
   },
   {
-    label: "Amoy RWA -> Bridge",
+    label: "Amoy mTRWA -> Bridge",
     tokenId: "amoy-rwa",
     spenderId: "bridge",
   },
@@ -82,7 +82,6 @@ const presets = [
 export function AllowancePage() {
   const { address } = useAppKitAccount();
   const account = (address ?? zeroAddress) as Address;
-  const queryClient = useQueryClient();
   const tx = useContractTransaction();
   const [tokenId, setTokenId] = useState<string>(tokenOptions[0].id);
   const token = tokenOptions.find((item) => item.id === tokenId) ?? tokenOptions[0];
@@ -90,8 +89,10 @@ export function AllowancePage() {
   const [spenderId, setSpenderId] = useState<string>(spenderOptions[0]?.id ?? customSpenderId);
   const [customSpender, setCustomSpender] = useState("");
   const [amount, setAmount] = useState("");
+  const debouncedCustomSpender = useDebouncedValue(customSpender);
   const selectedSpender = spenderOptions.find((item) => item.id === spenderId);
-  const spender = selectedSpender?.address ?? (isAddress(customSpender) ? customSpender : undefined);
+  const spender = selectedSpender?.address ?? (isAddress(debouncedCustomSpender) ? debouncedCustomSpender : undefined);
+  const spenderForApprove = selectedSpender?.address ?? (isAddress(customSpender) ? customSpender : undefined);
 
   const decimals = useReadContract({
     address: token.address,
@@ -109,7 +110,7 @@ export function AllowancePage() {
     address: token.address,
     abi: erc20Abi,
     functionName: "allowance",
-    args: [account, (spender ?? zeroAddress) as Address],
+    args: [account, spender ?? zeroAddress],
     chainId: chainConfig[token.chain].id,
     query: { enabled: Boolean(address && spender) },
   });
@@ -123,22 +124,21 @@ export function AllowancePage() {
   }
 
   async function approve() {
-    if (!spender || amountUnits === undefined) return;
-    await tx.writeAsync({
+    if (!spenderForApprove || amountUnits === undefined) return;
+    await tx.writeAndInvalidateQueries({
       address: token.address,
       abi: erc20Abi,
       functionName: "approve",
-      args: [spender, amountUnits],
+      args: [spenderForApprove, amountUnits],
       chainId: chainConfig[token.chain].id,
     });
-    await queryClient.invalidateQueries();
   }
 
   return (
     <div>
       <PageHeader
         title="Manage allowances"
-        description="Inspect and update wallet allowances for MockUSDC and RWA spenders used by the controller and bridges."
+        description="Inspect and update wallet allowances for MockUSDC and mTRWA spenders used by the controller and bridges."
       />
       <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
         <Card>
@@ -204,7 +204,7 @@ export function AllowancePage() {
               <InfoRow label="Connected owner" value={address ? shortenAddress(address) : "Not connected"} />
               <InfoRow
                 label="Current allowance"
-                value={`${formatTokenAmount(allowance.data as bigint | undefined, tokenDecimals, 6)} ${String(symbol.data ?? "token")}`}
+                value={`${formatTokenAmount(allowance.data, tokenDecimals, 6)} ${String(symbol.data ?? "token")}`}
               />
               <Field>
                 <FieldLabel htmlFor="allowance-amount">New allowance</FieldLabel>
@@ -219,7 +219,7 @@ export function AllowancePage() {
               <NetworkAction
                 chainId={chainConfig[token.chain].id}
                 chainName={chainConfig[token.chain].name}
-                disabled={!spender || amountUnits === undefined}
+                disabled={!spenderForApprove || amountUnits === undefined}
                 pending={tx.isPending}
                 onClick={approve}
               >

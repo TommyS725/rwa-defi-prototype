@@ -5,6 +5,12 @@ import { AppProviders } from "@/providers/AppProviders";
 import { routeTree } from "@/routes/routeTree";
 import "@/styles.css";
 
+if (typeof (BigInt.prototype as any).toJSON !== "function") {
+  (BigInt.prototype as any).toJSON = function () {
+    return this.toString();
+  };
+}
+
 const router = createRouter({ routeTree, defaultPreload: "intent", scrollRestoration: true });
 
 declare module "@tanstack/react-router" {

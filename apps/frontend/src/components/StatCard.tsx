@@ -19,15 +19,19 @@ export function StatCard({
       </CardHeader>
       <CardContent>
         {loading ? <Skeleton className="h-8 w-32" /> : <div className="text-2xl font-semibold">{value}</div>}
-        {detail ? Array.isArray(detail) ? <>
-          {detail.map((line) => (
-            <p key={`${line}`} className="mt-2 text-xs text-muted-foreground">
-              {line}
-            </p>
-          ))}
-        </> :
-          <p className="mt-2 text-xs text-muted-foreground">{detail}</p>
-          : null}
+        {detail ? (
+          Array.isArray(detail) ? (
+            <>
+              {detail.map((line) => (
+                <p key={`${line}`} className="mt-2 text-xs text-muted-foreground">
+                  {line}
+                </p>
+              ))}
+            </>
+          ) : (
+            <p className="mt-2 text-xs text-muted-foreground">{detail}</p>
+          )
+        ) : null}
       </CardContent>
     </Card>
   );

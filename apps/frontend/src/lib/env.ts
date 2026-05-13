@@ -47,6 +47,8 @@ export const env: Env = {
   sepoliaExplorerUrl: stripSlash(required("VITE_SEPOLIA_EXPLORER_URL")),
   amoyExplorerUrl: stripSlash(required("VITE_AMOY_EXPLORER_URL")),
   ccipExplorerUrl: stripSlash(required("VITE_CCIP_EXPLORER_URL")),
-  ccipTokenManagerUrl: stripSlash(required("VITE_CCIP_TOKEN_MANAGER_URL")),
+  ccipTokenManagerUrl: stripSlash(
+    required("VITE_MTRWA_CCIP_TOKEN_MANAGER_URL"),
+  ),
   githubRepoUrl: optional("VITE_GITHUB_REPO_URL"),
 };

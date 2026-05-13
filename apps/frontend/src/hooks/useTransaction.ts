@@ -1,22 +1,43 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import type { Hash } from "viem";
-import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
+import { useConfig, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
+import { waitForTransactionReceipt } from "wagmi/actions";
 
 export function useContractTransaction() {
   const [hash, setHash] = useState<Hash | undefined>();
   const [messageId, setMessageId] = useState<string | undefined>();
+  const config = useConfig();
+  const queryClient = useQueryClient();
   const write = useWriteContract();
   const receipt = useWaitForTransactionReceipt({ hash });
+
+  async function writeAsync(...args: Parameters<typeof write.writeContractAsync>) {
+    setMessageId(undefined);
+    setHash(undefined);
+    write.reset();
+    const nextHash = await write.writeContractAsync(...args);
+    setHash(nextHash);
+    return nextHash;
+  }
 
   return {
     hash,
     messageId,
     setMessageId,
-    writeAsync: async (...args: Parameters<typeof write.writeContractAsync>) => {
-      setMessageId(undefined);
-      const nextHash = await write.writeContractAsync(...args);
-      setHash(nextHash);
-      return nextHash;
+    writeAsync,
+    writeAndInvalidateQueries: async (...args: Parameters<typeof writeAsync>) => {
+      const nextHash = await writeAsync(...args);
+      const request = args[0] as { chainId?: number };
+      const nextReceipt = await waitForTransactionReceipt(config, {
+        chainId: request.chainId,
+        hash: nextHash,
+      });
+      await queryClient.invalidateQueries();
+      return {
+        hash: nextHash,
+        receipt: nextReceipt,
+      };
     },
     isPending: write.isPending || receipt.isLoading,
     isSuccess: receipt.isSuccess,

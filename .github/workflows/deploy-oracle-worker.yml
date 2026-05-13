@@ -5,7 +5,13 @@ on:
     branches:
       - main
     paths:
-      - "apps/oracle-worker/**"
+      - "apps/oracle-worker/src/**"
+      - "apps/oracle-worker/package.json"
+      - "apps/oracle-worker/tsconfig.json"
+      - "apps/oracle-worker/wrangler.jsonc"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
       - ".github/workflows/deploy-oracle-worker.yml"
   workflow_dispatch:
 

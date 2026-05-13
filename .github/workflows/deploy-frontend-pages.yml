@@ -6,7 +6,11 @@ on:
       - main
     paths:
       - "apps/frontend/**"
-      - "packages/contracts/**"
+      - "!apps/frontend/README.md"
+      - "apps/oracle-worker/src/**"
+      - "apps/oracle-worker/package.json"
+      - "packages/contracts/generated/index.ts"
+      - "packages/contracts/package.json"
       - "package.json"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"

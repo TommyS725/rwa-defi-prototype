@@ -16,11 +16,13 @@ Workflow:
 
 The workflow:
 
-1. Runs on pushes to `main` that affect the frontend, contracts package, workspace package files, or the workflow.
+1. Runs on pushes to `main` that affect frontend files, worker RPC source/types, generated contract exports, workspace package files, or the workflow.
 2. Installs workspace dependencies with pnpm.
 3. Runs `pnpm web:build`.
 4. Uploads `apps/frontend/dist` as a GitHub Pages artifact.
 5. Deploys through `actions/deploy-pages`.
+
+Documentation-only changes to `apps/frontend/README.md`, contract source files, and contract deployment JSON are excluded from automatic frontend deployment unless they also update `packages/contracts/generated/index.ts`. Worker source changes trigger frontend deployment because the frontend imports the Hono RPC `AppType` from `@rwa/oracle-worker`.
 
 The frontend build includes:
 
@@ -50,9 +52,11 @@ Workflow:
 
 The workflow:
 
-1. Runs on pushes to `main` that affect `apps/oracle-worker`.
+1. Runs on pushes to `main` that affect worker source, worker config, workspace package files, or the workflow.
 2. Installs the worker workspace dependencies.
 3. Deploys with `cloudflare/wrangler-action`.
+
+Documentation-only changes to `apps/oracle-worker/README.md` do not trigger worker deployment.
 
 Required secrets:
 

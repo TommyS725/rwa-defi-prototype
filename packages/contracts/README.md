@@ -31,9 +31,9 @@ Polygon Amoy:
 - RWATokenBridge: [0x33D1BD56C1725A17dE9F868FE2Fc1a4059e74cfC](https://amoy.polygonscan.com/address/0x33D1BD56C1725A17dE9F868FE2Fc1a4059e74cfC)
 - BurnMintTokenPool: [0x42b1f7F33160D38620f4A51DE73Bdf7c6fC68d04](https://amoy.polygonscan.com/address/0x42b1f7F33160D38620f4A51DE73Bdf7c6fC68d04)
 
-CCIP Token Manager:
+## Related Chainlink Tools
 
-- https://test.tokenmanager.chain.link/dashboard/ethereum-testnet-sepolia,0xa9f14a61f54f7485c5b6f329be76eca42b6a9a68
+- CCIP Token Manager: https://test.tokenmanager.chain.link/dashboard/ethereum-testnet-sepolia,0xa9f14a61f54f7485c5b6f329be76eca42b6a9a68
 
 ## Main Contracts
 

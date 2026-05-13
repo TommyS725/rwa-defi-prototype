@@ -201,6 +201,7 @@ export function RedeemPage() {
               />
               <InfoRow label="Vault liquidity" value={`${formatTokenAmount(vaultUsdc.data, USDC_DECIMALS, 2)} mUSDC`} />
               <InfoRow label="Current NAV" value={formatUsd18(nav.data, 4)} />
+              <InfoRow label="mTRWA allowance" value={`${formatTokenAmount(allowance.data, rwaDecimals, 2)} mTRWA`} />
             </CardContent>
           </Card>
           <Alert>

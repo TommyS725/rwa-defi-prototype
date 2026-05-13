@@ -1016,11 +1016,11 @@
 			]
 		},
 		"token/MockUSDC.sol": {
-			"keccak256": "0xa2359fd171e55f42ce62db1a3e6ef6f6f8b16d4bd921ea09861b1e098de22636",
+			"keccak256": "0x99bc5ad78be0dfec2048ad065ab058c181fe1d765ae7c52f61bc2dcee98cf9d2",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://b6d8588a187fab786df6fdca64d6b0f19214c3e20045f908affe04f7b730ddbf",
-				"dweb:/ipfs/QmXhaoUWKpqUi66AvupgD4mkH1pDDUfeck2akHmDfRKmtv"
+				"bzz-raw://f3d69a31cc916277eb0c4da7460fba3b45432a8277f9800e39c585e0bf9ea8fe",
+				"dweb:/ipfs/QmXnmgH5q1X6BVUW6R2Anov1rVGtdSbUrSmFWyxgp6HA53"
 			]
 		}
 	},

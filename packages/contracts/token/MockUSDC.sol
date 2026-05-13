@@ -9,7 +9,7 @@ import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20P
 contract MockUSDC is ERC20, Ownable, ERC20Permit {
     mapping(address => uint256) private lastFaucetAt;
     uint8 private constant _decimals = 6;
-    uint256 private constant FAUCET_AMOUNT = 1000 * 10 ** _decimals;
+    uint256 private constant FAUCET_AMOUNT = 10_000 * 10 ** _decimals;
 
     constructor(
         address initialOwner
@@ -28,7 +28,7 @@ contract MockUSDC is ERC20, Ownable, ERC20Permit {
     function faucet() external {
         require(block.timestamp >= lastFaucetAt[msg.sender] + 1 hours, "wait");
         lastFaucetAt[msg.sender] = block.timestamp;
-        _mint(msg.sender, 10_000 * 10 ** decimals());
+        _mint(msg.sender, FAUCET_AMOUNT);
     }
 
     function getLastFaucetAt(address _user) external view returns(uint256){

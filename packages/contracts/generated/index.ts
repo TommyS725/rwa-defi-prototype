@@ -2332,6 +2332,19 @@ export const rWAMintControllerVaultAbi = [
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "usdc",
+        "type": "address"
+      }
+    ],
+    "name": "USDCSet",
+    "type": "event"
+  },
+  {
     "inputs": [],
     "name": "initializeFund",
     "outputs": [],
@@ -2642,6 +2655,19 @@ export const rWAMintControllerVaultAbi = [
       }
     ],
     "name": "setRedeemPaused",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_oracle",
+        "type": "address"
+      }
+    ],
+    "name": "setUSDC",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -5930,13 +5956,13 @@ export const sepoliaContracts = {
   MockUSDC: {
     chainId: 11155111,
     chainName: "sepolia",
-    address: "0xa94dD8860AA4aaBf53AE905d234cCF1ed0D7C811",
+    address: "0x6e3AD7B665ca85CD33A37fb6a3e232Bc38d66097",
     abi: mockUSDCAbi
   },
   RWAMintControllerVault: {
     chainId: 11155111,
     chainName: "sepolia",
-    address: "0x152bE1dfD8cBE3C4985b54A5f10D1Bb9784A0DFF",
+    address: "0x27a51EC7b17c6d646E5acc067F0e82e904EbE77D",
     abi: rWAMintControllerVaultAbi
   },
   RWAToken: {

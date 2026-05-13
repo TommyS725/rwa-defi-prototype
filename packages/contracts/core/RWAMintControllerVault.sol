@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.27;
 
+import "@openzeppelin/contracts/utils/math/Math.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {IERC20Metadata} from "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -109,6 +110,7 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
     event MaxOracleDelaySet(uint256 maxOracleDelay);
     event IssuerSet(address indexed issuer);
     event OracleSet(address indexed oracle);
+    event USDCSet(address indexed usdc);
 
     constructor(
         address _oracle,
@@ -160,13 +162,13 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
 
         ReserveData memory data = _getValidOracleData();
 
-        require(
-            data.adjustedOffchainReserveUSD > 0,
-            "no offchain reserve"
-        );
+        require(data.adjustedOffchainReserveUSD > 0, "no offchain reserve");
 
-        uint256 initialSupply =
-            (data.adjustedOffchainReserveUSD * rwaUnit) / initialNAVUSD18;
+        uint256 initialSupply = Math.mulDiv(
+            data.adjustedOffchainReserveUSD,
+            rwaUnit,
+            initialNAVUSD18
+        );
 
         require(initialSupply > 0, "zero initial supply");
 
@@ -221,14 +223,7 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
      */
     function previewMintWithUSDC(
         uint256 maxUSDCIn
-    )
-        external
-        view
-        returns (
-            uint256 rwaAmount,
-            uint256 usdcRequired
-        )
-    {
+    ) external view returns (uint256 rwaAmount, uint256 usdcRequired) {
         ReserveData memory data = _getValidOracleData();
         uint256 navUSD18 = _navPerTokenUSD18(data);
 
@@ -240,14 +235,7 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
      */
     function previewRedeem(
         uint256 maxRwaIn
-    )
-        external
-        view
-        returns (
-            uint256 rwaRequired,
-            uint256 usdcAmount
-        )
-    {
+    ) external view returns (uint256 rwaRequired, uint256 usdcAmount) {
         ReserveData memory data = _getValidOracleData();
         uint256 navUSD18 = _navPerTokenUSD18(data);
 
@@ -261,8 +249,7 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
     function _totalBackingValueUSD18(
         ReserveData memory data
     ) internal view returns (uint256) {
-        uint256 onchainUSDCUSD18 =
-            usdc.balanceOf(address(this)) * usdcToUSD18;
+        uint256 onchainUSDCUSD18 = usdc.balanceOf(address(this)) * usdcToUSD18;
 
         return data.adjustedOffchainReserveUSD + onchainUSDCUSD18;
     }
@@ -278,7 +265,7 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
 
         uint256 backingUSD18 = _totalBackingValueUSD18(data);
 
-        return (backingUSD18 * rwaUnit) / supply;
+        return Math.mulDiv(backingUSD18, rwaUnit, supply);
     }
 
     // =============================================================
@@ -300,14 +287,7 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
     function mintWithUSDC(
         uint256 maxUSDCIn,
         uint256 minRwaOut
-    )
-        external
-        nonReentrant
-        returns (
-            uint256 rwaAmount,
-            uint256 usdcRequired
-        )
-    {
+    ) external nonReentrant returns (uint256 rwaAmount, uint256 usdcRequired) {
         require(initialized, "not initialized");
         require(!mintPaused, "mint paused");
         require(maxUSDCIn > 0, "zero USDC");
@@ -315,48 +295,31 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
         ReserveData memory data = _getValidOracleData();
         uint256 navUSD18 = _navPerTokenUSD18(data);
 
-        (rwaAmount, usdcRequired) =
-            _quoteMintWithUSDC(maxUSDCIn, navUSD18);
+        (rwaAmount, usdcRequired) = _quoteMintWithUSDC(maxUSDCIn, navUSD18);
 
         require(rwaAmount > 0, "zero mint amount");
         require(rwaAmount >= minRwaOut, "insufficient RWA out");
         require(usdcRequired > 0, "zero USDC required");
         require(usdcRequired <= maxUSDCIn, "USDC required exceeds max");
 
-        usdc.safeTransferFrom(
-            msg.sender,
-            address(this),
-            usdcRequired
-        );
+        usdc.safeTransferFrom(msg.sender, address(this), usdcRequired);
 
         rwaToken.mint(msg.sender, rwaAmount);
 
-        emit Minted(
-            msg.sender,
-            usdcRequired,
-            navUSD18,
-            rwaAmount
-        );
+        emit Minted(msg.sender, usdcRequired, navUSD18, rwaAmount);
     }
 
     function _quoteMintWithUSDC(
         uint256 maxUSDCIn,
         uint256 navUSD18
-    )
-        internal
-        view
-        returns (
-            uint256 rwaAmount,
-            uint256 usdcRequired
-        )
-    {
+    ) internal view returns (uint256 rwaAmount, uint256 usdcRequired) {
         require(navUSD18 > 0, "bad NAV");
 
         uint256 maxPaymentUSD18 = maxUSDCIn * usdcToUSD18;
 
         // Calculate maximum RWA mintable from maxUSDCIn.
         // Rounds down so the user will never pay more than maxUSDCIn.
-        rwaAmount = (maxPaymentUSD18 * rwaUnit) / navUSD18;
+        rwaAmount = Math.mulDiv(maxPaymentUSD18, rwaUnit, navUSD18);
 
         if (rwaAmount == 0) {
             return (0, 0);
@@ -364,17 +327,11 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
 
         // Calculate actual USD18 required for the rounded RWA amount.
         // Round up so the user does not underpay.
-        uint256 requiredUSD18 = _ceilDiv(
-            rwaAmount * navUSD18,
-            rwaUnit
-        );
+        uint256 requiredUSD18 = Math.ceilDiv(rwaAmount * navUSD18, rwaUnit);
 
         // Convert USD18 to USDC native decimals.
         // Round up to avoid underpayment due to USDC decimals.
-        usdcRequired = _ceilDiv(
-            requiredUSD18,
-            usdcToUSD18
-        );
+        usdcRequired = Math.ceilDiv(requiredUSD18, usdcToUSD18);
     }
 
     // =============================================================
@@ -400,14 +357,7 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
     function redeem(
         uint256 maxRwaIn,
         uint256 minUSDCOut
-    )
-        external
-        nonReentrant
-        returns (
-            uint256 rwaRequired,
-            uint256 usdcAmount
-        )
-    {
+    ) external nonReentrant returns (uint256 rwaRequired, uint256 usdcAmount) {
         require(initialized, "not initialized");
         require(!redeemPaused, "redeem paused");
         require(maxRwaIn > 0, "zero RWA");
@@ -415,8 +365,7 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
         ReserveData memory data = _getValidOracleData();
         uint256 navUSD18 = _navPerTokenUSD18(data);
 
-        (rwaRequired, usdcAmount) =
-            _quoteRedeem(maxRwaIn, navUSD18);
+        (rwaRequired, usdcAmount) = _quoteRedeem(maxRwaIn, navUSD18);
 
         require(rwaRequired > 0, "zero RWA required");
         require(rwaRequired <= maxRwaIn, "RWA required exceeds max");
@@ -432,31 +381,18 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
 
         usdc.safeTransfer(msg.sender, usdcAmount);
 
-        emit Redeemed(
-            msg.sender,
-            rwaRequired,
-            navUSD18,
-            usdcAmount
-        );
+        emit Redeemed(msg.sender, rwaRequired, navUSD18, usdcAmount);
     }
 
     function _quoteRedeem(
         uint256 maxRwaIn,
         uint256 navUSD18
-    )
-        internal
-        view
-        returns (
-            uint256 rwaRequired,
-            uint256 usdcAmount
-        )
-    {
+    ) internal view returns (uint256 rwaRequired, uint256 usdcAmount) {
         require(navUSD18 > 0, "bad NAV");
 
         // Maximum USD18 value represented by maxRwaIn.
         // Rounds down so the contract never overpays.
-        uint256 maxRedeemUSD18 =
-            (maxRwaIn * navUSD18) / rwaUnit;
+        uint256 maxRedeemUSD18 = Math.mulDiv(maxRwaIn, navUSD18, rwaUnit);
 
         // Convert USD18 to USDC native decimals.
         // Rounds down because USDC cannot pay fractional smallest units.
@@ -471,10 +407,7 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
 
         // Calculate RWA amount required for paid USDC.
         // Round up so the contract does not under-burn.
-        rwaRequired = _ceilDiv(
-            paidUSD18 * rwaUnit,
-            navUSD18
-        );
+        rwaRequired = Math.ceilDiv(paidUSD18 * rwaUnit, navUSD18);
     }
 
     /**
@@ -492,11 +425,17 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
         ReserveData memory data = _getValidOracleData();
         uint256 navUSD18 = _navPerTokenUSD18(data);
 
-        (uint256 rwaRequired, uint256 expectedUSDCAmount) =
-            _quoteRedeem(maxRwaIn, navUSD18);
+        (uint256 rwaRequired, uint256 expectedUSDCAmount) = _quoteRedeem(
+            maxRwaIn,
+            navUSD18
+        );
 
         require(rwaRequired > 0, "zero RWA required");
         require(expectedUSDCAmount > 0, "zero redeem amount");
+        require(
+            rwaToken.balanceOf(msg.sender) >= rwaRequired,
+            "insufficient RWA balance"
+        );
 
         emit RedemptionRequested(
             msg.sender,
@@ -520,9 +459,7 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
         emit RedeemPausedSet(paused);
     }
 
-    function setMaxOracleDelay(
-        uint256 _maxOracleDelay
-    ) external onlyOwner {
+    function setMaxOracleDelay(uint256 _maxOracleDelay) external onlyOwner {
         require(_maxOracleDelay > 0, "bad delay");
 
         maxOracleDelay = _maxOracleDelay;
@@ -546,6 +483,14 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
         emit OracleSet(_oracle);
     }
 
+    function setUSDC(address _oracle) external onlyOwner {
+        require(_oracle != address(0), "bad oracle");
+
+        oracle = IReserveOracle(_oracle);
+
+        emit OracleSet(_oracle);
+    }
+
     // =============================================================
     //                         INTERNAL ORACLE LOGIC
     // =============================================================
@@ -561,23 +506,11 @@ contract RWAMintControllerVault is Ownable, ReentrancyGuard {
         require(data.updatedAt > 0, "oracle not updated");
 
         require(
-            maxOracleDelay == 0 || (block.timestamp - data.updatedAt <= maxOracleDelay),
+            maxOracleDelay == 0 ||
+                (block.timestamp - data.updatedAt <= maxOracleDelay),
             "oracle data stale"
         );
 
         return data;
-    }
-
-    function _ceilDiv(
-        uint256 a,
-        uint256 b
-    ) internal pure returns (uint256) {
-        require(b > 0, "division by zero");
-
-        if (a == 0) {
-            return 0;
-        }
-
-        return ((a - 1) / b) + 1;
     }
 }

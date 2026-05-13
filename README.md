@@ -6,8 +6,8 @@ Demo repository for an RWA tokenization prototype. The system connects an editab
 
 - Frontend: https://rwa-defi-prototype.tommyshum.com/
 - Oracle worker: https://oracle-worker.rwa-defi-prototype.tommyshum.com
-- Oracle API: `https://oracle-worker.rwa-defi-prototype.tommyshum.com/api/v1/reserve/latest`
-- Oracle admin: `https://oracle-worker.rwa-defi-prototype.tommyshum.com/admin`
+- Oracle API: https://oracle-worker.rwa-defi-prototype.tommyshum.com/api/v1/reserve/latest
+- Oracle admin: https://oracle-worker.rwa-defi-prototype.tommyshum.com/admin
 
 ## Workspace
 

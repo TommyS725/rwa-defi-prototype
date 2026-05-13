@@ -8,8 +8,8 @@
     }
   },
   "scripts": {
-    "format": "biome format --write",
-    "format:check": "biome format",
+    "format": "biome check --write",
+    "format:check": "biome check",
     "contracts:dev": "pnpm --filter @rwa/contracts dev",
     "contracts:simulate:functions": "pnpm --filter @rwa/contracts simulate:functions",
     "contracts:source:copy": "pnpm --filter @rwa/contracts source:copy",

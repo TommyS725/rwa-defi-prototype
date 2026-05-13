@@ -1,7 +1,7 @@
 import { Slot } from "@radix-ui/react-slot";
 import { type ButtonHTMLAttributes, forwardRef } from "react";
+import type { ClassNameValue } from "tailwind-merge";
 import { cn } from "@/lib/utils";
-import { ClassNameValue } from "tailwind-merge";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   asChild?: boolean;

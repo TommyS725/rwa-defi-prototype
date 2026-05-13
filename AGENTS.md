@@ -26,6 +26,8 @@ This file applies to the whole repository.
 
 - Keep the frontend pure client-side. Do not add backend/server logic to `apps/frontend`.
 - Use TypeScript, React, TanStack Router, TanStack Query, shadcn-style UI components, Reown AppKit, wagmi, and viem.
+- Keep imports sorted through Biome organize imports.
+- Do not leave unused imports. Biome treats unused imports as errors.
 - Use bigint-safe token math. Do not use floating point for token amounts.
 - Use `parseUnits`/`formatUnits` through local formatting helpers.
 - MockUSDC uses 6 decimals. mTRWA decimals should be read from token contract when needed.

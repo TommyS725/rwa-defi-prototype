@@ -3,7 +3,6 @@ import { ArrowLeftRight } from "lucide-react";
 import { useMemo, useState } from "react";
 import { type Address, decodeEventLog, zeroAddress } from "viem";
 import { useReadContract } from "wagmi";
-import { ExternalLink } from "@/components/ExternalLink";
 import { InfoRow } from "@/components/InfoRow";
 import { NetworkAction } from "@/components/NetworkAction";
 import { PageHeader } from "@/components/PageHeader";
@@ -13,12 +12,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { chainConfig, ccipMessageUrl, explorerAddressUrl, explorerTxUrl, type ChainKey } from "@/lib/chains";
-import { contracts, erc20Abi } from "@/lib/contracts";
-import { formatTokenAmount, parseTokenAmount } from "@/lib/format";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { useRwaDecimals } from "@/hooks/useTokenDecimals";
 import { useContractTransaction } from "@/hooks/useTransaction";
+import { type ChainKey, ccipMessageUrl, chainConfig, explorerTxUrl } from "@/lib/chains";
+import { contracts, erc20Abi } from "@/lib/contracts";
+import { formatTokenAmount, parseTokenAmount } from "@/lib/format";
 
 const directions: Array<{ source: ChainKey; destination: ChainKey }> = [
   { source: "sepolia", destination: "amoy" },

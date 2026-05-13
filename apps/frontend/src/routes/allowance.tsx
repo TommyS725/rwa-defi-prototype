@@ -12,11 +12,11 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { chainConfig, explorerTxUrl, type ChainKey } from "@/lib/chains";
-import { contracts, erc20Abi } from "@/lib/contracts";
-import { formatTokenAmount, parseTokenAmount, shortenAddress } from "@/lib/format";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { useContractTransaction } from "@/hooks/useTransaction";
+import { type ChainKey, chainConfig, explorerTxUrl } from "@/lib/chains";
+import { contracts, erc20Abi } from "@/lib/contracts";
+import { formatTokenAmount, parseTokenAmount, shortenAddress } from "@/lib/format";
 
 type TokenOption = {
   id: string;

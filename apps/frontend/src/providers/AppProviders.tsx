@@ -1,5 +1,5 @@
-import { createAppKit } from "@reown/appkit/react";
 import type { AppKitNetwork } from "@reown/appkit/networks";
+import { createAppKit } from "@reown/appkit/react";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import { QueryClientProvider } from "@tanstack/react-query";
 import type { PropsWithChildren } from "react";

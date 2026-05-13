@@ -10,12 +10,12 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { chainConfig, explorerTxUrl } from "@/lib/chains";
-import { contracts, USDC_DECIMALS } from "@/lib/contracts";
-import { formatTokenAmount, formatUsd18, parseTokenAmount } from "@/lib/format";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { useRwaDecimals } from "@/hooks/useTokenDecimals";
 import { useContractTransaction } from "@/hooks/useTransaction";
+import { chainConfig, explorerTxUrl } from "@/lib/chains";
+import { contracts, USDC_DECIMALS } from "@/lib/contracts";
+import { formatTokenAmount, formatUsd18, parseTokenAmount } from "@/lib/format";
 
 export function RedeemPage() {
   const { address } = useAppKitAccount();

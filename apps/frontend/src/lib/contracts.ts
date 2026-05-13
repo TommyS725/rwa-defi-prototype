@@ -1,10 +1,10 @@
 import {
   amoyContracts,
   mockUSDCAbi,
-  rWAMintControllerVaultAbi,
-  rWATokenAbi,
-  rWATokenBridgeAbi,
-  reserveOracleAbi,
+  type reserveOracleAbi,
+  type rWAMintControllerVaultAbi,
+  type rWATokenAbi,
+  type rWATokenBridgeAbi,
   sepoliaContracts,
 } from "@rwa/contracts";
 

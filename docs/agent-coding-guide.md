@@ -86,3 +86,5 @@ Biome is configured at the repo root and applies to JS/TS/TSX files.
 ```sh
 pnpm format
 ```
+
+Biome also organizes imports and rejects unused imports. Run `pnpm format` before finishing frontend code changes so import sorting and cleanup are applied automatically.

@@ -11,12 +11,12 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useContractTransaction } from "@/hooks/useTransaction";
 import { chainConfig, explorerTxUrl } from "@/lib/chains";
 import { contracts, USDC_DECIMALS } from "@/lib/contracts";
 import { env } from "@/lib/env";
 import { formatIntegerString, formatTimestamp, formatTokenAmount, formatUsd18 } from "@/lib/format";
 import { fetchReserveReport } from "@/lib/oracle";
-import { useContractTransaction } from "@/hooks/useTransaction";
 
 type SuccessfulRead = { status: "success"; result: unknown };
 

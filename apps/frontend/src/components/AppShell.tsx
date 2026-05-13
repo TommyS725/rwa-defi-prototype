@@ -1,10 +1,10 @@
-import { useAppKit, useAppKitAccount, useAppKitNetwork, AppKitAccountButton } from "@reown/appkit/react";
+import { AppKitAccountButton, useAppKit, useAppKitAccount, useAppKitNetwork } from "@reown/appkit/react";
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { Coins, Droplets, Home, Info, Repeat, Send, ShieldCheck } from "lucide-react";
 import { ContractEventSync } from "@/components/ContractEventSync";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { chainConfig } from "@/lib/chains";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +20,7 @@ const nav = [
 
 export function AppShell() {
   const { open } = useAppKit();
-  const { address, isConnected } = useAppKitAccount();
+  const { isConnected } = useAppKitAccount();
   const { chainId } = useAppKitNetwork();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const activeChain = Object.values(chainConfig).find((chain) => chain.id === chainId);

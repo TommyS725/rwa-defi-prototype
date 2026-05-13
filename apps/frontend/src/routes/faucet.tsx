@@ -6,10 +6,10 @@ import { NetworkAction } from "@/components/NetworkAction";
 import { PageHeader } from "@/components/PageHeader";
 import { TxStatus } from "@/components/TxStatus";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { useContractTransaction } from "@/hooks/useTransaction";
 import { chainConfig, explorerTxUrl } from "@/lib/chains";
 import { contracts, USDC_DECIMALS } from "@/lib/contracts";
 import { formatTimestamp, formatTokenAmount } from "@/lib/format";
-import { useContractTransaction } from "@/hooks/useTransaction";
 
 export function FaucetPage() {
   const { address } = useAppKitAccount();

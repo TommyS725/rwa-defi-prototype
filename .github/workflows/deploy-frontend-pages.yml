@@ -1,0 +1,79 @@
+name: Deploy Frontend to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/frontend/**"
+      - "packages/contracts/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - ".github/workflows/deploy-frontend-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build frontend
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.13.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build frontend
+        run: pnpm web:build
+        env:
+          VITE_REOWN_PROJECT_ID: ${{ secrets.VITE_REOWN_PROJECT_ID }}
+          VITE_ORACLE_API_URL: ${{ vars.VITE_ORACLE_API_URL }}
+          VITE_ORACLE_ADMIN_URL: ${{ vars.VITE_ORACLE_ADMIN_URL }}
+          VITE_SEPOLIA_CCIP_SELECTOR: ${{ vars.VITE_SEPOLIA_CCIP_SELECTOR }}
+          VITE_AMOY_CCIP_SELECTOR: ${{ vars.VITE_AMOY_CCIP_SELECTOR }}
+          VITE_SEPOLIA_EXPLORER_URL: ${{ vars.VITE_SEPOLIA_EXPLORER_URL }}
+          VITE_AMOY_EXPLORER_URL: ${{ vars.VITE_AMOY_EXPLORER_URL }}
+          VITE_CCIP_EXPLORER_URL: ${{ vars.VITE_CCIP_EXPLORER_URL }}
+          VITE_MTRWA_CCIP_TOKEN_MANAGER_URL: ${{ vars.VITE_MTRWA_CCIP_TOKEN_MANAGER_URL }}
+          VITE_GITHUB_REPO_URL: ${{ vars.VITE_GITHUB_REPO_URL }}
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/frontend/dist
+
+  deploy:
+    name: Deploy frontend
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

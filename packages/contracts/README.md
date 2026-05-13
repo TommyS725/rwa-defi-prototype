@@ -92,6 +92,8 @@ pnpm source:copy
 pnpm dev
 ```
 
+`pnpm dev` runs `remixd`. After it starts, open https://remix.ethereum.org and connect Remix IDE to localhost. The `remixd` process is a local file tunnel that lets Remix read and edit this contracts package from the browser.
+
 ## Notes For Frontend Changes
 
 - Do not hardcode contract ABIs in `apps/frontend`.

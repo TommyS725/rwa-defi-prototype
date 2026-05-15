@@ -7,6 +7,7 @@ on:
     paths:
       - "apps/frontend/**"
       - "!apps/frontend/README.md"
+      - "!apps/frontend/.env.example"
       - "apps/oracle-worker/src/**"
       - "apps/oracle-worker/package.json"
       - "packages/contracts/generated/index.ts"

@@ -53,6 +53,19 @@ The worker uses a KV namespace bound as `RWA_ORACLE_KV`.
 
 Configuration lives in `wrangler.jsonc`.
 
+The Wrangler config controls both local development and deployment:
+
+- `name`: deployed Worker name.
+- `main`: Worker entry point.
+- `compatibility_date`: Cloudflare Workers runtime compatibility date.
+- `kv_namespaces[].binding`: must stay `RWA_ORACLE_KV` because the worker code reads that binding.
+- `kv_namespaces[].id`: production KV namespace used by `wrangler deploy`.
+- `kv_namespaces[].preview_id`: preview KV namespace used by `wrangler dev`.
+
+For local development, `pnpm oracle-worker:dev` starts Wrangler with the preview KV namespace. The local frontend can point `VITE_ORACLE_WORKER_URL` at the local Wrangler URL, usually `http://localhost:8787`.
+
+For deployment, authenticate Wrangler with Cloudflare before running `pnpm oracle-worker:deploy` locally. CI deploys through GitHub Actions with the Cloudflare account ID and API token listed below.
+
 ## GitHub Actions
 
 Deployment workflow:

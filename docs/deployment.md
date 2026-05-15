@@ -83,7 +83,7 @@ Then open https://remix.ethereum.org and connect Remix IDE to localhost. Remix w
 
 Typical Remix deployment flow:
 
-1. Open the desired contract under `packages/contracts/contracts`.
+1. Open the desired contract under the relevant source directory in `packages/contracts`, such as `core`, `token`, `oracle`, or `ccip`.
 2. Compile with the Solidity compiler version selected by Remix.
 3. In "Deploy & Run Transactions", choose "Injected Provider - MetaMask".
 4. Switch MetaMask to the target testnet, usually Sepolia or Polygon Amoy.

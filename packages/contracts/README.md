@@ -35,6 +35,42 @@ Polygon Amoy:
 
 - CCIP Token Manager: https://test.tokenmanager.chain.link/dashboard/ethereum-testnet-sepolia,0xa9f14a61f54f7485c5b6f329be76eca42b6a9a68
 
+## Remix IDE Development
+
+Start the local `remixd` file tunnel from the repository root:
+
+```sh
+pnpm contracts:dev
+```
+
+Or from this directory:
+
+```sh
+pnpm dev
+```
+
+Then open https://remix.ethereum.org and connect Remix IDE to localhost. Remix can read the local contracts package through the `remixd` tunnel.
+
+Contract sources are split by domain under this package:
+
+- `core`
+- `token`
+- `oracle`
+- `ccip`
+- `interface`
+
+Typical Remix deployment flow:
+
+1. Open the desired contract from the relevant source directory.
+2. Compile with the Solidity compiler version selected by Remix.
+3. In "Deploy & Run Transactions", choose "Injected Provider - MetaMask".
+4. Switch MetaMask to the target testnet, usually Sepolia or Polygon Amoy.
+5. Select the contract and provide constructor arguments.
+6. Deploy and confirm the transaction in MetaMask.
+7. Copy the deployed address into `deployments/*.json`.
+8. Run `pnpm contracts:generate` from the repository root so the frontend receives the updated generated address exports.
+9. Run `pnpm web:build` to verify the frontend still typechecks against the updated contract metadata.
+
 ## Main Contracts
 
 - `MockUSDC`: test USDC used by the demo.

@@ -24,6 +24,8 @@ VITE_GITHUB_REPO_URL=
 
 The frontend validates required env vars at startup.
 
+Use the live worker URL for normal frontend development. If you are actively changing the worker, run `pnpm oracle-worker:dev` and temporarily set `VITE_ORACLE_WORKER_URL=http://localhost:8787`.
+
 ## GitHub Pages Variables
 
 Store as GitHub Actions Variables:
@@ -56,6 +58,8 @@ KV binding:
 ```txt
 RWA_ORACLE_KV
 ```
+
+`wrangler.jsonc` defines the Worker name, entry point, compatibility date, and KV namespaces. Keep the binding name as `RWA_ORACLE_KV`; use `id` for deployed KV and `preview_id` for local `wrangler dev`.
 
 GitHub Actions deployment secrets:
 
